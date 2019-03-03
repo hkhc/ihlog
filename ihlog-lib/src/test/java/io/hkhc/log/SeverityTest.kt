@@ -41,7 +41,7 @@ class SeverityTest {
         val log = provider.getLog("HELLO")
 
         // when
-        LogFactory.logLevel = Severity.Warn
+        LogSettings.logLevel = Severity.Warn
         log.trace("Log trace") // should not logged
         log.warn("Log warn") // should be logged
         log.err("Log err") // should be logged

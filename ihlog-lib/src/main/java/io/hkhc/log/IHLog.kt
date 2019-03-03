@@ -41,13 +41,13 @@ interface IHLog {
     /* helpers */
 
     fun logWithFilter(priority: Severity, tag: String?, message: String) {
-        if (!priority.shouldBeFilteredBy(LogFactory.logLevel)) {
+        if (!priority.shouldBeFilteredBy(LogSettings.logLevel)) {
             log(priority, tag, message)
         }
     }
 
     fun logWithFilter(priority: Severity, tag: String?, lambda: () -> String) {
-        if (!priority.shouldBeFilteredBy(LogFactory.logLevel)) {
+        if (!priority.shouldBeFilteredBy(LogSettings.logLevel)) {
             log(priority, tag, lambda)
         }
     }

@@ -28,8 +28,6 @@ object LogFactory {
 
     private val logMap = mutableMapOf<Class<out Any>, IHLog>()
 
-    var logLevel = Severity.Warn
-
     var defaultProvider: IHLogProvider? = null
         set(value) {
             field = value
