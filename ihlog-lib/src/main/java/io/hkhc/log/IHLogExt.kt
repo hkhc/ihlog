@@ -61,7 +61,7 @@ fun Any.err(tag: String, message: String) = l.err(tag, message)
 fun Any.err(message: String) = l.err(message)
 fun Any.err(tag: String, lambda: () -> String) = l.err(tag, lambda)
 fun Any.err(lambda: () -> String) = l.err(lambda)
-fun Any.err(tag: String, throwable: Throwable) = l.exception(tag, null, throwable)
-fun Any.err(throwable: Throwable) = l.exception(null, null, throwable)
-fun Any.err(tag: String, message: String, throwable: Throwable) =
-    l.exception(tag, message, throwable)
+
+fun Throwable.log(tag: String?=null, message: String?=null)
+        = l.exception(tag, message, this)
+
