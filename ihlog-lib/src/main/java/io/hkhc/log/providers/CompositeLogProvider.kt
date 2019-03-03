@@ -23,6 +23,14 @@ import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
 import io.hkhc.log.Priority
 
+/**
+ * Log provider for log to redirect log to multiple [IHLog] instances. All of them share the same
+ * tag.
+ *
+ * @property providers List of [LogProvider]. [IHLog] object is created from each of those
+ * providers. Every log line is redirected all of those [IHLog] object.
+ *
+ */
 class CompositeLogProvider(vararg val providers: IHLogProvider) : IHLogProvider {
 
     override fun getLog(defaultTag: String): IHLog =

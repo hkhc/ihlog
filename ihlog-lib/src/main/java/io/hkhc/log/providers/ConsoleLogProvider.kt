@@ -23,13 +23,25 @@ import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
 import io.hkhc.log.Priority
 
+/**
+ * Log provider to send log to two other [IHLog]s. One is for less than error output, and the other
+ * for error, fatal or exception. Both [IHLog]s share the same tag.
+ *
+ * @property outLogProvider Log provider to create log for non-error output.
+ * @property errLogProvider Log provider to create log for error output.
+ *
+ */
 class ConsoleLogProvider(
-    var outLogger: PrintWriterLogProvider,
-    var errLogger: PrintWriterLogProvider
+    var outLogProvider: PrintWriterLogProvider,
+    var errLogProvider: PrintWriterLogProvider
 ) : IHLogProvider {
 
     override fun getLog(defaultTag: String): IHLog =
-            ConsoleLog(defaultTag, outLogger.getLog(defaultTag), errLogger.getLog(defaultTag))
+            ConsoleLog(
+                defaultTag,
+                outLogProvider.getLog(defaultTag),
+                errLogProvider.getLog(defaultTag)
+            )
 
     class ConsoleLog(defaultTag: String, var outLogger: IHLog, var errLogger: IHLog)
         : AbstractIHLog(defaultTag) {

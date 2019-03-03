@@ -22,6 +22,11 @@ import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
 import io.hkhc.log.Priority
 
+/**
+ * A useless [IHLog] that warp up another.
+ *
+ * @param defaultTag tag that override the delegated log.
+ */
 class InterceptionLog(defaultTag: String) : AbstractIHLog(defaultTag) {
 
     private lateinit var delegate: IHLog
@@ -31,5 +36,6 @@ class InterceptionLog(defaultTag: String) : AbstractIHLog(defaultTag) {
     }
 
     override fun log(priority: Priority, tag: String?, message: String) {
+        delegate.log(priority, tag, message)
     }
 }

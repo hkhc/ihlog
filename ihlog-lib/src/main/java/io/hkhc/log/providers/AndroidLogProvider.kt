@@ -25,9 +25,17 @@ import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
 import io.hkhc.log.Priority
 
+/**
+ * Log provider for the usual Android Log.
+ *
+ * @property currentOSVersion indicate the Android OS version the class is running on, as specified
+ * in Build.VERSION.SDK_INT. Pre-N Android has limitation to on tag size. The provider split the tag
+ * so that it can fit in to pre-N tag field. The rest part of tag is moved to the log body.
+ *
+ */
 class AndroidLogProvider(var currentOSVersion: Int = Build.VERSION.SDK_INT) : IHLogProvider {
 
-    fun isAndroidN() = currentOSVersion >= Build.VERSION_CODES.N
+    internal fun isAndroidN() = currentOSVersion >= Build.VERSION_CODES.N
 
     override fun getLog(defaultTag: String): IHLog {
 
