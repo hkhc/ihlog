@@ -18,8 +18,15 @@
 
 package io.hkhc.log
 
+import io.hkhc.log.internal.LogFactory
+
 object LogSettings {
 
     var logLevel : Severity = Severity.Debug
+    var metaTag: String = ""
+        set(value) {
+            field = value
+            LogFactory.purge()
+        }
 
 }

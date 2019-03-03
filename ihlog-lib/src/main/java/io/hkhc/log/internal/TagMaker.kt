@@ -18,9 +18,9 @@
 
 package io.hkhc.log.internal
 
-object TagMaker {
+import io.hkhc.log.LogSettings
 
-    var META_TAG: String = ""
+object TagMaker {
 
     /**
      * Given a class object, create a abbreviate string that represent it.
@@ -85,7 +85,7 @@ object TagMaker {
      * @return
      */
     fun getLogTag(clazz: Class<*>): String {
-        val delimiter = if (META_TAG == "") "" else "_"
-        return "${META_TAG}${delimiter}${getClassNameAbbr(clazz.name)}"
+        val delimiter = if (LogSettings.metaTag == "") "" else "_"
+        return "${LogSettings.metaTag}${delimiter}${getClassNameAbbr(clazz.name)}"
     }
 }

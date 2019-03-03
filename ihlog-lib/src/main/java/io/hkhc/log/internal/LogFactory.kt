@@ -20,6 +20,7 @@ package io.hkhc.log.internal
 
 import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
+import io.hkhc.log.LogSettings
 import io.hkhc.log.Severity
 import io.hkhc.log.providers.NullLogProvider
 
@@ -34,12 +35,6 @@ object LogFactory {
             logMap.clear()
         }
 
-    var metaTag: String = TagMaker.META_TAG
-        set(value) {
-            field = value
-            logMap.clear()
-        }
-
     fun getCurrentDefaultProvider() =
         defaultProvider ?: (
             FactoryPropertiesLoader().loadProvider()?.also {
@@ -48,11 +43,7 @@ object LogFactory {
         )
 
     internal fun createTag(key: Class<out Any>): String {
-        val prefix = if (metaTag.isEmpty())
-            ""
-        else
-            "${metaTag}_"
-        return "${prefix}${TagMaker.getLogTag(key)}"
+        return TagMaker.getLogTag(key)
     }
 
     internal fun getNewLog(key: Class<out Any>) =
@@ -64,9 +55,21 @@ object LogFactory {
             })
     }
 
-    fun clear() {
+    /**
+     * Reset the log factory to initial state, including pruging the cached object, reset the
+     * meta tags, and default log provider. It is mainly for unit tests and not for production
+     * use.
+     */
+    fun reset() {
         logMap.clear()
-        metaTag = TagMaker.META_TAG
         defaultProvider = null
     }
+
+    /**
+     * remove all cached log object. But it does not change other Log settings
+     */
+    fun purge() {
+        logMap.clear()
+    }
+
 }

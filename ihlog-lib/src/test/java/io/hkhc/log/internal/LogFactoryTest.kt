@@ -18,6 +18,7 @@
 
 package io.hkhc.log.internal
 
+import io.hkhc.log.LogSettings
 import io.hkhc.log.providers.NullLogProvider
 import io.hkhc.log.providers.PrintWriterLogProvider
 import org.assertj.core.api.Assertions.assertThat
@@ -28,17 +29,17 @@ class LogFactoryTest {
 
     @Before
     fun setUp() {
-        LogFactory.clear()
+        LogFactory.reset()
     }
 
     @Test
     fun `create tag`() {
         // given
-        LogFactory.metaTag = ""
+        LogSettings.metaTag = ""
         // then
         assertThat(LogFactory.createTag(LogFactoryTest::class.java)).isEqualTo("LFT")
         // when
-        LogFactory.metaTag = "TEST"
+        LogSettings.metaTag = "TEST"
         assertThat(LogFactory.createTag(LogFactoryTest::class.java)).isEqualTo("TEST_LFT")
     }
 
@@ -46,7 +47,7 @@ class LogFactoryTest {
     fun `log meta tag`() {
 
         // given
-        LogFactory.metaTag = "TEST"
+        LogSettings.metaTag = "TEST"
 
         // when
         val log1 = LogFactory.getLog(LogFactoryTest::class.java)
@@ -59,7 +60,7 @@ class LogFactoryTest {
     fun `log meta tag change is active immediately`() {
 
         // given
-        LogFactory.metaTag = "TEST"
+        LogSettings.metaTag = "TEST"
 
         // when
         var log1 = LogFactory.getLog(LogFactoryTest::class.java)
@@ -68,7 +69,7 @@ class LogFactoryTest {
         assertThat(log1.getLogTag()).isEqualTo("TEST_LFT")
 
         // when
-        LogFactory.metaTag = "APPLE"
+        LogSettings.metaTag = "APPLE"
         log1 = LogFactory.getLog(LogFactoryTest::class.java)
 
         // then
