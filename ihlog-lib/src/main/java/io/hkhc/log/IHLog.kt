@@ -33,53 +33,53 @@ interface IHLog {
      * @param tag - optional tag string. If it is null, the provider shall use its own default tag
      * @param message - the log message
      */
-    fun log(priority: Priority, tag: String?, message: String)
-    fun log(priority: Priority, tag: String?, lambda: () -> String) = log(priority, tag, lambda())
+    fun log(priority: Severity, tag: String?, message: String)
+    fun log(priority: Severity, tag: String?, lambda: () -> String) = log(priority, tag, lambda())
 
     fun getLogTag(): String
 
     /* helpers */
 
-    fun logWithFilter(priority: Priority, tag: String?, message: String) {
+    fun logWithFilter(priority: Severity, tag: String?, message: String) {
         if (!priority.shouldBeFilteredBy(LogFactory.logLevel)) {
             log(priority, tag, message)
         }
     }
 
-    fun logWithFilter(priority: Priority, tag: String?, lambda: () -> String) {
+    fun logWithFilter(priority: Severity, tag: String?, lambda: () -> String) {
         if (!priority.shouldBeFilteredBy(LogFactory.logLevel)) {
             log(priority, tag, lambda)
         }
     }
 
-    fun debug(tag: String, message: String) = logWithFilter(Priority.Debug, tag, message)
-    fun debug(message: String) = logWithFilter(Priority.Debug, null, message)
-    fun debug(tag: String, lambda: () -> String) = logWithFilter(Priority.Debug, tag, lambda())
-    fun debug(lambda: () -> String) = logWithFilter(Priority.Debug, null, lambda)
+    fun debug(tag: String, message: String) = logWithFilter(Severity.Debug, tag, message)
+    fun debug(message: String) = logWithFilter(Severity.Debug, null, message)
+    fun debug(tag: String, lambda: () -> String) = logWithFilter(Severity.Debug, tag, lambda())
+    fun debug(lambda: () -> String) = logWithFilter(Severity.Debug, null, lambda)
 
-    fun info(tag: String, message: String) = logWithFilter(Priority.Info, tag, message)
-    fun info(message: String) = logWithFilter(Priority.Info, null, message)
-    fun info(tag: String, lambda: () -> String) = logWithFilter(Priority.Info, tag, lambda)
-    fun info(lambda: () -> String) = logWithFilter(Priority.Info, null, lambda)
+    fun info(tag: String, message: String) = logWithFilter(Severity.Info, tag, message)
+    fun info(message: String) = logWithFilter(Severity.Info, null, message)
+    fun info(tag: String, lambda: () -> String) = logWithFilter(Severity.Info, tag, lambda)
+    fun info(lambda: () -> String) = logWithFilter(Severity.Info, null, lambda)
 
-    fun warn(tag: String, message: String) = logWithFilter(Priority.Warn, tag, message)
-    fun warn(message: String) = logWithFilter(Priority.Warn, null, message)
-    fun warn(tag: String, lambda: () -> String) = logWithFilter(Priority.Warn, tag, lambda)
-    fun warn(lambda: () -> String) = logWithFilter(Priority.Warn, null, lambda)
+    fun warn(tag: String, message: String) = logWithFilter(Severity.Warn, tag, message)
+    fun warn(message: String) = logWithFilter(Severity.Warn, null, message)
+    fun warn(tag: String, lambda: () -> String) = logWithFilter(Severity.Warn, tag, lambda)
+    fun warn(lambda: () -> String) = logWithFilter(Severity.Warn, null, lambda)
 
-    fun trace(tag: String, message: String) = logWithFilter(Priority.Trace, tag, message)
-    fun trace(message: String) = logWithFilter(Priority.Trace, null, message)
-    fun trace(tag: String, lambda: () -> String) = logWithFilter(Priority.Trace, tag, lambda)
-    fun trace(lambda: () -> String) = logWithFilter(Priority.Trace, null, lambda)
+    fun trace(tag: String, message: String) = logWithFilter(Severity.Trace, tag, message)
+    fun trace(message: String) = logWithFilter(Severity.Trace, null, message)
+    fun trace(tag: String, lambda: () -> String) = logWithFilter(Severity.Trace, tag, lambda)
+    fun trace(lambda: () -> String) = logWithFilter(Severity.Trace, null, lambda)
 
-    fun fatal(tag: String, message: String) = logWithFilter(Priority.Fatal, tag, message)
-    fun fatal(message: String) = logWithFilter(Priority.Fatal, null, message)
-    fun fatal(tag: String, lambda: () -> String) = logWithFilter(Priority.Fatal, tag, lambda)
-    fun fatal(lambda: () -> String) = logWithFilter(Priority.Fatal, null, lambda)
+    fun fatal(tag: String, message: String) = logWithFilter(Severity.Fatal, tag, message)
+    fun fatal(message: String) = logWithFilter(Severity.Fatal, null, message)
+    fun fatal(tag: String, lambda: () -> String) = logWithFilter(Severity.Fatal, tag, lambda)
+    fun fatal(lambda: () -> String) = logWithFilter(Severity.Fatal, null, lambda)
 
-    fun err(tag: String, message: String) = logWithFilter(Priority.Error, tag, message)
-    fun err(message: String) = logWithFilter(Priority.Error, null, message)
-    fun err(tag: String, lambda: () -> String) = logWithFilter(Priority.Error, tag, lambda)
-    fun err(lambda: () -> String) = logWithFilter(Priority.Error, null, lambda)
+    fun err(tag: String, message: String) = logWithFilter(Severity.Error, tag, message)
+    fun err(message: String) = logWithFilter(Severity.Error, null, message)
+    fun err(tag: String, lambda: () -> String) = logWithFilter(Severity.Error, tag, lambda)
+    fun err(lambda: () -> String) = logWithFilter(Severity.Error, null, lambda)
     fun err(tag: String, throwable: Throwable) = l.exception(tag, null, throwable)
 }

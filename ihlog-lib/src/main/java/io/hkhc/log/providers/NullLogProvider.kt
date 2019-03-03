@@ -21,7 +21,7 @@ package io.hkhc.log.providers
 import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 
 class NullLogProvider : IHLogProvider {
 
@@ -29,7 +29,7 @@ class NullLogProvider : IHLogProvider {
 
     class NullIHLog(defaultTag: String) : AbstractIHLog(defaultTag) {
 
-        override fun log(priority: Priority, tag: String?, message: String) {
+        override fun log(priority: Severity, tag: String?, message: String) {
             // Nothing Intentionally
         }
     }

@@ -24,13 +24,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.io.StringWriter
 
-class PriorityTest {
+class SeverityTest {
 
     @Test
     fun `test shouldBeFiltered`() {
 
-        assertThat(Priority.Warn.shouldBeFilteredBy(Priority.Error)).isTrue()
-        assertThat(Priority.Warn.shouldBeFilteredBy(Priority.Trace)).isFalse()
+        assertThat(Severity.Warn.shouldBeFilteredBy(Severity.Error)).isTrue()
+        assertThat(Severity.Warn.shouldBeFilteredBy(Severity.Trace)).isFalse()
     }
 
     @Test
@@ -41,7 +41,7 @@ class PriorityTest {
         val log = provider.getLog("HELLO")
 
         // when
-        LogFactory.logLevel = Priority.Warn
+        LogFactory.logLevel = Severity.Warn
         log.trace("Log trace") // should not logged
         log.warn("Log warn") // should be logged
         log.err("Log err") // should be logged

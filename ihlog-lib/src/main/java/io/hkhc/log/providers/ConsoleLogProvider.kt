@@ -21,7 +21,7 @@ package io.hkhc.log.providers
 import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 
 /**
  * Log provider to send log to two other [IHLog]s. One is for less than error output, and the other
@@ -46,7 +46,7 @@ class ConsoleLogProvider(
     class ConsoleLog(defaultTag: String, var outLogger: IHLog, var errLogger: IHLog)
         : AbstractIHLog(defaultTag) {
 
-        override fun log(priority: Priority, tag: String?, message: String) {
+        override fun log(priority: Severity, tag: String?, message: String) {
             outLogger.log(priority, tag, message)
         }
     }

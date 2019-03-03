@@ -23,7 +23,7 @@ import android.util.Log
 import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 
 /**
  * Log provider for the usual Android Log.
@@ -47,15 +47,15 @@ class AndroidLogProvider(var currentOSVersion: Int = Build.VERSION.SDK_INT) : IH
 
     open class NAndroidIHLog(defaultTag: String) : AbstractIHLog(defaultTag) {
 
-        override fun log(priority: Priority, tag: String?, message: String) {
+        override fun log(priority: Severity, tag: String?, message: String) {
 
             val level = when (priority) {
-                Priority.Info -> Log.INFO
-                Priority.Trace -> Log.INFO
-                Priority.Debug -> Log.DEBUG
-                Priority.Error -> Log.ERROR
-                Priority.Fatal -> Log.ASSERT
-                Priority.Warn -> Log.WARN
+                Severity.Info -> Log.INFO
+                Severity.Trace -> Log.INFO
+                Severity.Debug -> Log.DEBUG
+                Severity.Error -> Log.ERROR
+                Severity.Fatal -> Log.ASSERT
+                Severity.Warn -> Log.WARN
             }
 
             message.lineSequence().forEach { line ->
@@ -81,7 +81,7 @@ class AndroidLogProvider(var currentOSVersion: Int = Build.VERSION.SDK_INT) : IH
             }
         }
 
-        override fun log(priority: Priority, tag: String?, message: String) {
+        override fun log(priority: Severity, tag: String?, message: String) {
 
             if (tag == null)
                 log(priority, defaultTag, message)

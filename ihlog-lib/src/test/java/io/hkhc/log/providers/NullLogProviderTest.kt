@@ -18,7 +18,7 @@
 
 package io.hkhc.log.providers
 
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 import org.junit.Assert
 import org.junit.Test
 
@@ -42,6 +42,6 @@ class NullLogProviderTest {
         // given
         val log = NullLogProvider().getLog("LOG")
 
-        log.log(Priority.Debug, null, "Hello")
+        log.log(Severity.Debug, null, "Hello")
     }
 }

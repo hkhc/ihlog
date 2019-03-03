@@ -20,7 +20,7 @@ package io.hkhc.log.providers
 
 import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 
 fun IHLog.moreTag(extraTag: String): IHLog {
     return MoreTagLog(extraTag, this)
@@ -30,7 +30,7 @@ class MoreTagLog(defaultTag: String, var upstreamLog: IHLog) : AbstractIHLog(def
 
     val overlaidTag = "${upstreamLog.getLogTag()}/$defaultTag"
 
-    override fun log(priority: Priority, tag: String?, message: String) {
+    override fun log(priority: Severity, tag: String?, message: String) {
         upstreamLog.log(priority, overlaidTag, message)
     }
 }

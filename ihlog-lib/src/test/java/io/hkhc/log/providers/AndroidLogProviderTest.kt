@@ -20,7 +20,7 @@ package io.hkhc.log.providers
 
 import android.util.Log
 import io.hkhc.log.IHLogProvider
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 import io.mockk.mockkStatic
 import io.mockk.verify
 import org.junit.Assert
@@ -42,7 +42,7 @@ class AndroidLogProviderTest {
         val provider = AndroidLogProvider(24)
 
         // when
-        provider.getLog("LOG").log(Priority.Debug, null, "Hello")
+        provider.getLog("LOG").log(Severity.Debug, null, "Hello")
 
         // then
         verify { Log.println(Log.DEBUG, "LOG", "Hello") }
@@ -57,7 +57,7 @@ class AndroidLogProviderTest {
         // when
         provider
             .getLog("012345678901234567890123456789" /* 30 char */)
-            .log(Priority.Debug, null, "Hello")
+            .log(Severity.Debug, null, "Hello")
 
         // then
         verify { Log.println(Log.DEBUG, "01234567890123456789012" /* 23 char */, "3456789: Hello") }
@@ -72,7 +72,7 @@ class AndroidLogProviderTest {
         // when
         provider
             .getLog("012345678901234567890123456789" /* 30 char */)
-            .log(Priority.Debug, null, "Hello\nWorld")
+            .log(Severity.Debug, null, "Hello\nWorld")
 
         // then
         verify { Log.println(Log.DEBUG, "01234567890123456789012" /* 23 char */, "3456789: Hello") }
@@ -99,7 +99,7 @@ class AndroidLogProviderTest {
         val provider = newLogProvider()
 
         // when
-        provider.getLog("LOG").log(Priority.Debug, null, "Hello")
+        provider.getLog("LOG").log(Severity.Debug, null, "Hello")
 
         // then
         verify { Log.println(Log.DEBUG, "LOG", "Hello") }
@@ -108,7 +108,7 @@ class AndroidLogProviderTest {
     fun `assert print log`(provider: IHLogProvider, getLogString: () -> String) {
 
         val log = provider.getLog("LOG")
-        log.log(Priority.Debug, null, "Hello")
+        log.log(Severity.Debug, null, "Hello")
 
         verify { Log.println(Log.DEBUG, "LOG", getLogString()) }
     }
@@ -129,7 +129,7 @@ class AndroidLogProviderTest {
 
         val log = provider.getLog(tag)
         val logMessage = "Hello"
-        log.log(Priority.Debug, null, logMessage)
+        log.log(Severity.Debug, null, logMessage)
 
         verify { Log.println(Log.DEBUG, "LOG", logMessage) }
     }
@@ -146,9 +146,9 @@ class AndroidLogProviderTest {
 
         val log = provider.getLog("LOG")
 
-        log.log(Priority.Debug, null, "Hello")
-        log.log(Priority.Debug, "LOG2", "World")
-        log.log(Priority.Debug, null, "Hello World")
+        log.log(Severity.Debug, null, "Hello")
+        log.log(Severity.Debug, "LOG2", "World")
+        log.log(Severity.Debug, null, "Hello World")
         verify {
             Log.println(Log.DEBUG, "LOG", "Hello")
             Log.println(Log.DEBUG, "LOG2", "World")
@@ -168,12 +168,12 @@ class AndroidLogProviderTest {
 
         val log = logProvider.getLog("LOG")
 
-        log.log(Priority.Debug, null, "** DEBUG")
-        log.log(Priority.Info, null, "** INFO")
-        log.log(Priority.Warn, null, "** WARN")
-        log.log(Priority.Fatal, null, "** FATAL")
-        log.log(Priority.Error, null, "** ERROR")
-        log.log(Priority.Trace, null, "** TRACE")
+        log.log(Severity.Debug, null, "** DEBUG")
+        log.log(Severity.Info, null, "** INFO")
+        log.log(Severity.Warn, null, "** WARN")
+        log.log(Severity.Fatal, null, "** FATAL")
+        log.log(Severity.Error, null, "** ERROR")
+        log.log(Severity.Trace, null, "** TRACE")
 
         verify {
             Log.println(Log.DEBUG, "LOG", "** DEBUG")
@@ -197,7 +197,7 @@ class AndroidLogProviderTest {
 
         val log = provider.getLog("LOG")
 
-        log.log(Priority.Debug, null, """
+        log.log(Severity.Debug, null, """
                 Hello
                 World
                 Hello World

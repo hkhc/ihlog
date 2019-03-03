@@ -21,7 +21,7 @@ package io.hkhc.log.providers
 import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 import io.hkhc.log.SystemTimeSource
 import io.hkhc.log.TimeSource
 import java.io.PrintWriter
@@ -77,18 +77,18 @@ open class PrintWriterLogProvider(
             } catch (t: SecurityException) { 0 }
         }
 
-        private fun getVerbosityChar(priority: Priority) =
+        private fun getVerbosityChar(priority: Severity) =
             when (priority) {
-                Priority.Info -> 'i'
-                Priority.Warn -> 'w'
-                Priority.Debug -> 'd'
-                Priority.Fatal -> 'f'
-                Priority.Error -> 'e'
-                Priority.Trace -> 't'
+                Severity.Info -> 'i'
+                Severity.Warn -> 'w'
+                Severity.Debug -> 'd'
+                Severity.Fatal -> 'f'
+                Severity.Error -> 'e'
+                Severity.Trace -> 't'
             }
 
         // TODO decouple login for log one line and log string in general
-        private fun logImpl(priority: Priority, tag: String?, msg: String) {
+        private fun logImpl(priority: Severity, tag: String?, msg: String) {
 //            if (!filter(tag)) return
             val timestamp =
                 if (useTimestamp)
@@ -99,7 +99,7 @@ open class PrintWriterLogProvider(
             writer.println("$prefix$msg")
         }
 
-        override fun log(priority: Priority, tag: String?, message: String) {
+        override fun log(priority: Severity, tag: String?, message: String) {
             message.lineSequence().forEach { line ->
                 logImpl(priority, tag, line)
             }

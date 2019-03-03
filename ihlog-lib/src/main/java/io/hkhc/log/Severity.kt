@@ -18,15 +18,15 @@
 
 package io.hkhc.log
 
-sealed class Priority(val value: Int) {
+sealed class Severity(val value: Int) {
 
-    fun shouldBeFilteredBy(p: Priority) =
+    fun shouldBeFilteredBy(p: Severity) =
         p.value > value
 
-    object Trace : Priority(1)
-    object Debug : Priority(2)
-    object Info : Priority(3)
-    object Warn : Priority(4)
-    object Error : Priority(5)
-    object Fatal : Priority(6)
+    object Trace : Severity(1)
+    object Debug : Severity(2)
+    object Info : Severity(3)
+    object Warn : Severity(4)
+    object Error : Severity(5)
+    object Fatal : Severity(6)
 }

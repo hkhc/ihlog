@@ -20,7 +20,7 @@ package io.hkhc.log.internal
 
 import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 import io.hkhc.log.providers.NullLogProvider
 
 // TODO limit the size of map
@@ -28,7 +28,7 @@ object LogFactory {
 
     private val logMap = mutableMapOf<Class<out Any>, IHLog>()
 
-    var logLevel = Priority.Warn
+    var logLevel = Severity.Warn
 
     var defaultProvider: IHLogProvider? = null
         set(value) {

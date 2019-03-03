@@ -20,7 +20,7 @@ package io.hkhc.log.providers
 
 import io.hkhc.log.IHLogProvider
 import io.hkhc.log.MockTimeSource
-import io.hkhc.log.Priority
+import io.hkhc.log.Severity
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -68,7 +68,7 @@ class PrintWriterLogProviderTest {
     fun `assert print log`(provider: IHLogProvider, getLogString: () -> String) {
 
         val log = provider.getLog("LOG")
-        log.log(Priority.Debug, null, "Hello")
+        log.log(Severity.Debug, null, "Hello")
 
         Assert.assertEquals("01-01 08:00:00.001  -/LOG d/Hello\n", getLogString())
     }
@@ -94,7 +94,7 @@ class PrintWriterLogProviderTest {
     ) {
 
         val log = provider.getLog(tag)
-        log.log(Priority.Debug, null, "Hello")
+        log.log(Severity.Debug, null, "Hello")
         Assert.assertEquals("01-01 08:00:00.001  -/$tag d/Hello\n", getLogString())
     }
 
@@ -110,9 +110,9 @@ class PrintWriterLogProviderTest {
 
         val log = provider.getLog("LOG")
 
-        log.log(Priority.Debug, null, "Hello")
-        log.log(Priority.Debug, "LOG2", "World")
-        log.log(Priority.Debug, null, "Hello World")
+        log.log(Severity.Debug, null, "Hello")
+        log.log(Severity.Debug, "LOG2", "World")
+        log.log(Severity.Debug, null, "Hello World")
         Assert.assertEquals(
             """
                     01-01 08:00:00.001  -/LOG d/Hello
@@ -137,12 +137,12 @@ class PrintWriterLogProviderTest {
 
         val log = logProvider.getLog("LOG")
 
-        log.log(Priority.Debug, null, "** DEBUG")
-        log.log(Priority.Info, null, "** INFO")
-        log.log(Priority.Warn, null, "** WARN")
-        log.log(Priority.Fatal, null, "** FATAL")
-        log.log(Priority.Error, null, "** ERROR")
-        log.log(Priority.Trace, null, "** TRACE")
+        log.log(Severity.Debug, null, "** DEBUG")
+        log.log(Severity.Info, null, "** INFO")
+        log.log(Severity.Warn, null, "** WARN")
+        log.log(Severity.Fatal, null, "** FATAL")
+        log.log(Severity.Error, null, "** ERROR")
+        log.log(Severity.Trace, null, "** TRACE")
 
         Assert.assertEquals(
             """
@@ -163,7 +163,7 @@ class PrintWriterLogProviderTest {
         newLogProvider().also { (provider, writer) ->
 
             // when
-            provider.getLog("LOG").log(Priority.Debug, null, "Hello")
+            provider.getLog("LOG").log(Severity.Debug, null, "Hello")
 
             // then
             Assert.assertEquals(
@@ -186,7 +186,7 @@ class PrintWriterLogProviderTest {
 
         val log = provider.getLog("LOG")
 
-        log.log(Priority.Debug, null, """
+        log.log(Severity.Debug, null, """
                 Hello
                 World
                 Hello World
