@@ -19,27 +19,19 @@
 package io.hkhc.log.internal
 
 import io.hkhc.log.IHLog
-import io.hkhc.log.IHLogProvider
 import io.hkhc.log.LogSettings
-import io.hkhc.log.Severity
-import io.hkhc.log.providers.NullLogProvider
+import io.hkhc.log.providers.AndroidLogProvider
 
 // TODO limit the size of map
 object LogFactory {
 
     private val logMap = mutableMapOf<Class<out Any>, IHLog>()
 
-    var defaultProvider: IHLogProvider? = null
-        set(value) {
-            field = value
-            logMap.clear()
-        }
-
     fun getCurrentDefaultProvider() =
-        defaultProvider ?: (
+        LogSettings.defaultProvider ?: (
             FactoryPropertiesLoader().loadProvider()?.also {
-                defaultProvider = it
-            } ?: NullLogProvider()
+                LogSettings.defaultProvider = it
+            } ?: AndroidLogProvider()
         )
 
     internal fun createTag(key: Class<out Any>): String {
@@ -61,14 +53,6 @@ object LogFactory {
      * use.
      */
     fun reset() {
-        logMap.clear()
-        defaultProvider = null
-    }
-
-    /**
-     * remove all cached log object. But it does not change other Log settings
-     */
-    fun purge() {
         logMap.clear()
     }
 

@@ -108,10 +108,11 @@ class LogFactoryTest {
         assertThat(log1).isInstanceOf(PrintWriterLogProvider.PrintWriterLog::class.java)
 
         // when
-        LogFactory.defaultProvider = NullLogProvider()
+        LogSettings.defaultProvider = NullLogProvider()
         log1 = LogFactory.getLog(TagMakerTest::class.java)
 
         // then
         assertThat(log1).isInstanceOf(NullLogProvider.NullIHLog::class.java)
     }
+
 }

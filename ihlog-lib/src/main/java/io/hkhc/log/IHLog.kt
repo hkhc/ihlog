@@ -18,8 +18,6 @@
 
 package io.hkhc.log
 
-import io.hkhc.log.internal.LogFactory
-
 @Suppress("TooManyFunctions")
 interface IHLog {
 
@@ -54,7 +52,7 @@ interface IHLog {
 
     fun debug(tag: String, message: String) = logWithFilter(Severity.Debug, tag, message)
     fun debug(message: String) = logWithFilter(Severity.Debug, null, message)
-    fun debug(tag: String, lambda: () -> String) = logWithFilter(Severity.Debug, tag, lambda())
+    fun debug(tag: String, lambda: () -> String) = logWithFilter(Severity.Debug, tag, lambda)
     fun debug(lambda: () -> String) = logWithFilter(Severity.Debug, null, lambda)
 
     fun info(tag: String, message: String) = logWithFilter(Severity.Info, tag, message)

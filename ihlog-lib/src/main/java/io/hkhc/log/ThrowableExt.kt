@@ -18,21 +18,7 @@
 
 package io.hkhc.log
 
-import io.hkhc.log.internal.LogFactory
+fun Throwable.log(tag: String?=null, message: String?=null)
+        = l.exception(tag, message, this)
 
-object LogSettings {
 
-    var defaultProvider: IHLogProvider? = null
-        set(value) {
-            field = value
-            LogFactory.reset()
-        }
-
-    var logLevel : Severity = Severity.Debug
-    var metaTag: String = ""
-        set(value) {
-            field = value
-            LogFactory.reset()
-        }
-
-}

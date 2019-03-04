@@ -17,15 +17,7 @@
  */
 
 @file:Suppress("TooManyFunctions")
-@file:JvmName("Logger")
 package io.hkhc.log
-
-import io.hkhc.log.internal.LogFactory
-
-val Any.l: IHLog
-    get() {
-        return LogFactory.getLog(this::class.java)
-    }
 
 /*
  We don't need to make tag parameter optional as there is always an alternative method
@@ -34,7 +26,7 @@ val Any.l: IHLog
 
 fun Any.debug(tag: String, message: String) = l.debug(tag, message)
 fun Any.debug(message: String) = l.debug(message)
-fun Any.debug(tag: String, lambda: () -> String) = l.debug(tag, lambda())
+fun Any.debug(tag: String, lambda: () -> String) = l.debug(tag, lambda)
 fun Any.debug(lambda: () -> String) = l.debug(lambda)
 
 fun Any.info(tag: String, message: String) = l.info(tag, message)
@@ -61,7 +53,3 @@ fun Any.err(tag: String, message: String) = l.err(tag, message)
 fun Any.err(message: String) = l.err(message)
 fun Any.err(tag: String, lambda: () -> String) = l.err(tag, lambda)
 fun Any.err(lambda: () -> String) = l.err(lambda)
-
-fun Throwable.log(tag: String?=null, message: String?=null)
-        = l.exception(tag, message, this)
-

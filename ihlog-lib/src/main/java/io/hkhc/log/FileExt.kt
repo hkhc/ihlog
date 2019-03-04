@@ -18,21 +18,10 @@
 
 package io.hkhc.log
 
-import io.hkhc.log.internal.LogFactory
+import java.io.File
 
-object LogSettings {
+fun File.log(tag: String, message: String, file: File, maxSize: Int = 4096) {
 
-    var defaultProvider: IHLogProvider? = null
-        set(value) {
-            field = value
-            LogFactory.reset()
-        }
 
-    var logLevel : Severity = Severity.Debug
-    var metaTag: String = ""
-        set(value) {
-            field = value
-            LogFactory.reset()
-        }
 
 }

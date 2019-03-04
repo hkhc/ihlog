@@ -16,23 +16,12 @@
  *
  */
 
+@file:JvmName("Logger")
 package io.hkhc.log
 
 import io.hkhc.log.internal.LogFactory
 
-object LogSettings {
-
-    var defaultProvider: IHLogProvider? = null
-        set(value) {
-            field = value
-            LogFactory.reset()
-        }
-
-    var logLevel : Severity = Severity.Debug
-    var metaTag: String = ""
-        set(value) {
-            field = value
-            LogFactory.reset()
-        }
-
-}
+val Any.l: IHLog
+    get() {
+        return LogFactory.getLog(this::class.java)
+    }
