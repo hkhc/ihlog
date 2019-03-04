@@ -18,10 +18,47 @@
 
 package io.hkhc.log
 
+import io.hkhc.log.internal.TagMaker
 import java.io.File
 
-fun File.log(tag: String, message: String, file: File, maxSize: Int = 4096) {
+const val MAX_FILE_LOG_SIZE = 4096
 
+private fun getTag(): String {
 
+    val ex = Exception()
+    val stackTrace = ex.stackTrace
+    val firstClass = stackTrace[0].className
+    for(element in ex.stackTrace) {
+        if (element.className != firstClass)
+            return TagMaker.getClassNameAbbr(element.className)
+    }
+    return ""
+}
+
+fun File.log(severity: Severity, tag: String?, maxSize: Int) {
+
+    val ex = Exception()
+    val parentTag = tag ?: TagMaker.getClassNameAbbr(ex.stackTrace[1].className)
+    var outputtedSize = 0
+
+    forEachLine {
+        val len = it.length
+        if (outputtedSize!=maxSize) {
+            if (outputtedSize + len > maxSize) {
+                l.log(severity, parentTag, it.substring(0, maxSize - outputtedSize))
+                outputtedSize = maxSize
+            } else {
+                l.log(severity, parentTag, it)
+                outputtedSize += len
+            }
+        }
+    }
 
 }
+
+fun File.trace(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Trace, getTag(), maxSize)
+fun File.info(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Info, getTag(), maxSize)
+fun File.debug(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Debug, getTag(), maxSize)
+fun File.warn(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Warn, getTag(), maxSize)
+fun File.err(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Error, getTag(), maxSize)
+fun File.fatal(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Fatal, getTag(), maxSize)
