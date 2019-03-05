@@ -18,7 +18,6 @@
 
 package io.hkhc.log
 
-import io.hkhc.log.internal.LogFactory
 import io.hkhc.log.providers.StringLogProvider
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

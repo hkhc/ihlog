@@ -18,16 +18,11 @@
 
 package io.hkhc.log.providers
 
-import io.hkhc.log.AbstractIHLog
-import io.hkhc.log.IHLog
-import io.hkhc.log.IHLogProvider
-import io.hkhc.log.Severity
-import io.hkhc.log.SystemTimeSource
-import io.hkhc.log.TimeSource
+import io.hkhc.log.*
 import java.io.PrintWriter
 import java.io.Writer
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
 open class PrintWriterLogProvider(
     private var printWriter: PrintWriter,

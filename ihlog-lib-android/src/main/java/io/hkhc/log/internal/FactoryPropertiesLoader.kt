@@ -20,7 +20,7 @@ package io.hkhc.log.internal
 
 import io.hkhc.log.IHLogProvider
 import java.io.IOException
-import java.util.Properties
+import java.util.*
 
 class FactoryPropertiesLoader {
 
