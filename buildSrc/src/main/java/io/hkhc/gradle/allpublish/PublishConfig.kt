@@ -46,4 +46,7 @@ class PublishConfig(project: Project) {
     val nexusUsername : String? by project
     val nexusPassword : String? by project
 
+    val bintrayUser: String? by project
+    val bintrayApiKey: String? by project
+
 }

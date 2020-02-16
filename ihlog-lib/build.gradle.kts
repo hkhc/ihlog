@@ -17,6 +17,8 @@
  */
 import io.hkhc.gradle.allpublish.PublishConfig
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 plugins {
     kotlin("jvm")
@@ -26,7 +28,7 @@ plugins {
 //    id("fr.coppernic.versioning") version "3.1.2"
     `maven-publish`
     signing
-//    id("com.jfrog.bintray")
+    id("com.jfrog.bintray")
 
 }
 
@@ -48,7 +50,6 @@ ktlint {
         setOf(ReporterType.CHECKSTYLE, ReporterType.PLAIN)
     }
 }
-
 
 detekt {
     config = files("default-detekt-config.yml")
@@ -77,48 +78,52 @@ publishing {
     publications {
         create<MavenPublication>("lib") {
 
-            groupId = pubConfig.artifactGroup
+            with(pubConfig) {
 
-            // The default artifactId is project.name
-            // artifactId = artifactEyeD
-            // version is gotten from an external plugin
-//            version = project.versioning.info.display
-            version = pubConfig.artifactVersion
-            // This is the main artifact
-            from(components["java"])
-            // We are adding documentation artifact
-            artifact(dokkaJar)
-            // And sources
-            artifact(sourcesJar)
+                groupId = artifactGroup
+
+                // The default artifactId is project.name
+                // artifactId = artifactEyeD
+                // version is gotten from an external plugin
+    //            version = project.versioning.info.display
+                version = artifactVersion
+                // This is the main artifact
+                from(components["java"])
+                // We are adding documentation artifact
+                artifact(dokkaJar)
+                // And sources
+                artifact(sourcesJar)
 
 
-            // See https://maven.apache.org/pom.html for POM definitions
+                // See https://maven.apache.org/pom.html for POM definitions
 
-            pom {
-                name.set(project.name)
-                description.set(pubConfig.pomDescription)
-                url.set(pubConfig.pomUrl)
-                licenses {
-                    license {
-                        name.set(pubConfig.licenseName)
-                        url.set(pubConfig.licenseUrl)
+                pom {
+                    name.set(project.name)
+                    description.set(pomDescription)
+                    url.set(pubConfig.pomUrl)
+                    licenses {
+                        license {
+                            name.set(licenseName)
+                            url.set(licenseUrl)
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set(developerId)
+                            name.set(developerName)
+                            email.set(developerEmail)
+                        }
+                    }
+                    scm {
+                        connection.set(scmConnection)
+                        developerConnection.set(scmConnection)
+                        url.set(scmUrl)
                     }
                 }
-                developers {
-                    developer {
-                        id.set(pubConfig.developerId)
-                        name.set(pubConfig.developerName)
-                        email.set(pubConfig.developerEmail)
-                    }
-                }
-                scm {
-                    connection.set(pubConfig.scmConnection)
-                    developerConnection.set(pubConfig.scmConnection)
-                    url.set(pubConfig.scmUrl)
-                }
+
+                // TODO dependency versionMapping
+
             }
-
-            // TODO dependency versionMapping
 
 
 
@@ -128,40 +133,82 @@ publishing {
     repositories {
 
         maven {
-            url = uri(
-                if (version.toString().endsWith("SNAPSHOT"))
-                    pubConfig.nexusSnapshotRepositoryUrl!!
-                else
-                    pubConfig.nexusReleaseRepositoryUrl!!
-            )
-            credentials {
-                username = pubConfig.nexusUsername!!
-                password = pubConfig.nexusPassword!!
+
+            with(pubConfig) {
+
+                url = uri(
+                    if (version.toString().endsWith("SNAPSHOT"))
+                        nexusSnapshotRepositoryUrl!!
+                    else
+                        nexusReleaseRepositoryUrl!!
+                )
+                credentials {
+                    username = nexusUsername!!
+                    password = nexusPassword!!
+                }
+
             }
+
         }
 
     }
 
 }
 
+fun currentZonedDateTime() =
+    ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"))
 
-//// TODO enable default of each of them
-//allPublish {
-//    documentTask.set(tasks.named<DokkaTask>("dokka"))
-//    sourceSet.set(sourceSets.getByName("main").allSource)
-//    publicationName.set("lib")
-//    publishComponent.set(components["java"])
-//    label.set("jar")
-//    System.out.println("ALL_PUBLISH(${project.name} finished allPublish")
-//}
+
+bintray {
+
+    override = true
+    dryRun = false
+    publish = true
+
+    user = pubConfig.bintrayUser
+    key = pubConfig.bintrayApiKey
+    setPublications("lib")
+
+    pkg.apply {
+        repo = "maven"
+        name = project.name
+        desc = pubConfig.pomDescription!!
+        setLicenses(pubConfig.licenseName!!)
+        websiteUrl = pubConfig.scmUrl!!
+        vcsUrl = pubConfig.scmUrl!!
+        githubRepo = pubConfig.scmGithubRepo!!
+        issueTrackerUrl = pubConfig.issuesUrl!!
+        version.apply {
+            name = pubConfig.artifactVersion!!
+            desc = pubConfig.pomDescription!!
+            released = currentZonedDateTime()
+            vcsTag = pubConfig.artifactVersion!!
+        }
+        setLabels("jar")
+    }
+
+    // Bintray requires our private key in order to sign archives for us. I don't want to share
+    // the key and hence specify the signature files manually and upload them.
+    filesSpec(closureOf<com.jfrog.bintray.gradle.tasks.RecordingCopyTask> {
+        from("${project.buildDir}/libs").apply {
+            include("*.aar.asc")
+            include("*.jar.asc")
+        }
+        from("${project.buildDir}/publications/${"lib"}").apply {
+            include("pom-default.xml.asc")
+            rename("pom-default.xml.asc",
+                "${project.name}-${pubConfig.artifactVersion}.pom.asc")
+        }
+        into("${(pubConfig.artifactGroup as String)
+            .replace('.', '/')}/${project.name}/${pubConfig.artifactVersion}")
+    })
+
+
+}
 
 signing {
     sign(publishing.publications["lib"])
 }
-
-//bintray {
-//    setup()
-//}
 
 
 dependencies {

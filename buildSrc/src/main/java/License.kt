@@ -16,33 +16,9 @@
  *
  */
 
-import org.redundent.kotlin.xml.xml
-
 data class License(
     var name: String,
     var url: String,
     var distribution: String,
     var comment: String
-) {
-
-    fun xxx() {
-
-        val x = xml("people") {
-            xmlns = "http://example.com/people"
-            "person" {
-                attribute("id", 1)
-                "firstName" {
-                    -"John"
-                }
-                "lastName" {
-                    -"Doe"
-                }
-                "phone" {
-                    -"555-555-5555"
-                }
-            }
-        }
-
-    }
-
-}
+)
