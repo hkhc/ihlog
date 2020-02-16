@@ -20,6 +20,7 @@ package io.hkhc.gradle.allpublish
 
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.tasks.RecordingCopyTask
+import io.hkhc.gradle.PublishConfig
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.plugins.JavaBasePlugin
@@ -32,6 +33,7 @@ import org.gradle.kotlin.dsl.create
 import java.net.URI
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+
 
 fun PublicationContainer.mavenPublication(project: Project) =
     project.plugins

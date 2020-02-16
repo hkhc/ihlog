@@ -15,10 +15,11 @@
  *
  *
  */
-import io.hkhc.gradle.allpublish.PublishConfig
+import io.hkhc.gradle.PublishConfig
+import io.hkhc.gradle.createPublication
+import io.hkhc.gradle.createRepository
+import io.hkhc.gradle.setupBintray
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 plugins {
     kotlin("jvm")
@@ -74,140 +75,23 @@ artifacts {
     artifacts.add("archives", dokkaJar)
 }
 
+val pubName = "lib"
+
 publishing {
     publications {
-        create<MavenPublication>("lib") {
-
-            with(pubConfig) {
-
-                groupId = artifactGroup
-
-                // The default artifactId is project.name
-                // artifactId = artifactEyeD
-                // version is gotten from an external plugin
-    //            version = project.versioning.info.display
-                version = artifactVersion
-                // This is the main artifact
-                from(components["java"])
-                // We are adding documentation artifact
-                artifact(dokkaJar)
-                // And sources
-                artifact(sourcesJar)
-
-
-                // See https://maven.apache.org/pom.html for POM definitions
-
-                pom {
-                    name.set(project.name)
-                    description.set(pomDescription)
-                    url.set(pubConfig.pomUrl)
-                    licenses {
-                        license {
-                            name.set(licenseName)
-                            url.set(licenseUrl)
-                        }
-                    }
-                    developers {
-                        developer {
-                            id.set(developerId)
-                            name.set(developerName)
-                            email.set(developerEmail)
-                        }
-                    }
-                    scm {
-                        connection.set(scmConnection)
-                        developerConnection.set(scmConnection)
-                        url.set(scmUrl)
-                    }
-                }
-
-                // TODO dependency versionMapping
-
-            }
-
-
-
-        }
+        createPublication(project, "lib", pubConfig, this)
     }
-
     repositories {
-
-        maven {
-
-            with(pubConfig) {
-
-                url = uri(
-                    if (version.toString().endsWith("SNAPSHOT"))
-                        nexusSnapshotRepositoryUrl!!
-                    else
-                        nexusReleaseRepositoryUrl!!
-                )
-                credentials {
-                    username = nexusUsername!!
-                    password = nexusPassword!!
-                }
-
-            }
-
-        }
-
+        createRepository(project, this, pubConfig)
     }
-
 }
 
-fun currentZonedDateTime() =
-    ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"))
-
-
 bintray {
-
-    override = true
-    dryRun = false
-    publish = true
-
-    user = pubConfig.bintrayUser
-    key = pubConfig.bintrayApiKey
-    setPublications("lib")
-
-    pkg.apply {
-        repo = "maven"
-        name = project.name
-        desc = pubConfig.pomDescription!!
-        setLicenses(pubConfig.licenseName!!)
-        websiteUrl = pubConfig.scmUrl!!
-        vcsUrl = pubConfig.scmUrl!!
-        githubRepo = pubConfig.scmGithubRepo!!
-        issueTrackerUrl = pubConfig.issuesUrl!!
-        version.apply {
-            name = pubConfig.artifactVersion!!
-            desc = pubConfig.pomDescription!!
-            released = currentZonedDateTime()
-            vcsTag = pubConfig.artifactVersion!!
-        }
-        setLabels("jar")
-    }
-
-    // Bintray requires our private key in order to sign archives for us. I don't want to share
-    // the key and hence specify the signature files manually and upload them.
-    filesSpec(closureOf<com.jfrog.bintray.gradle.tasks.RecordingCopyTask> {
-        from("${project.buildDir}/libs").apply {
-            include("*.aar.asc")
-            include("*.jar.asc")
-        }
-        from("${project.buildDir}/publications/${"lib"}").apply {
-            include("pom-default.xml.asc")
-            rename("pom-default.xml.asc",
-                "${project.name}-${pubConfig.artifactVersion}.pom.asc")
-        }
-        into("${(pubConfig.artifactGroup as String)
-            .replace('.', '/')}/${project.name}/${pubConfig.artifactVersion}")
-    })
-
-
+    setupBintray(this, pubName, pubConfig)
 }
 
 signing {
-    sign(publishing.publications["lib"])
+    sign(publishing.publications[pubName])
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2020. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  *
  */
 
-package io.hkhc.gradle.allpublish
+package io.hkhc.gradle
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.provideDelegate

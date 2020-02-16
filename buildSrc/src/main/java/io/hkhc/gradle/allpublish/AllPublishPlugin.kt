@@ -18,10 +18,12 @@
 
 package io.hkhc.gradle.allpublish
 
+import io.hkhc.gradle.PublishConfig
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginConvention
 import org.gradle.kotlin.dsl.create
+
 
 @Suppress("unused")
 class AllPublishPlugin: Plugin<Project> {

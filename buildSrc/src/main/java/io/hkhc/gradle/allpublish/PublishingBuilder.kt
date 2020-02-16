@@ -20,12 +20,14 @@ package io.hkhc.gradle.allpublish
 
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.tasks.RecordingCopyTask
+import io.hkhc.gradle.PublishConfig
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.kotlin.dsl.closureOf
 import org.gradle.kotlin.dsl.get
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+
 
 class PublishingBuilder(val project: Project) {
 

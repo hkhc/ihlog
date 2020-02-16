@@ -19,6 +19,7 @@
 package io.hkhc.gradle.allpublish
 
 import com.jfrog.bintray.gradle.BintrayExtension
+import io.hkhc.gradle.PublishConfig
 import org.gradle.BuildAdapter
 import org.gradle.BuildResult
 import org.gradle.api.Project
