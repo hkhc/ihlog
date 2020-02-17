@@ -35,15 +35,22 @@ import java.time.format.DateTimeFormatter
 
 fun PublicationContainer.createPublication(
     project: Project,
-    pubName: String
+    pubName: String,
+    pubComponent: String,
+    variant: String = ""
     ) {
 
+    val variantCap = variant.capitalize()
     val pubConfig = PublishConfig(project)
-    val dokkaJar = project.tasks.named("dokkaJar", Jar::class.java)
-    val sourcesJar = project.tasks.named("sourcesJar", Jar::class.java)
+    val dokkaJar = project.tasks.named("dokkaJar$variantCap", Jar::class.java) {
+        archiveClassifier.set("javadoc")
+    }
+    val sourcesJar = project.tasks.named("sourcesJar$variantCap", Jar::class.java) {
+        archiveClassifier.set("sources")
+    }
 
 
-    create<MavenPublication>(pubName) {
+    create<MavenPublication>("$pubName$variantCap") {
 
         with(pubConfig) {
 
@@ -55,7 +62,7 @@ fun PublicationContainer.createPublication(
             //            version = project.versioning.info.display
             version = artifactVersion
             // This is the main artifact
-            from(project.components["java"])
+            from(project.components[pubComponent])
             // We are adding documentation artifact
             artifact(dokkaJar.get())
             // And sources
@@ -65,7 +72,7 @@ fun PublicationContainer.createPublication(
             // See https://maven.apache.org/pom.html for POM definitions
 
             pom {
-                name.set(project.name)
+                name.set(artifactEyeD)
                 description.set(pomDescription)
                 url.set(pubConfig.pomUrl)
                 licenses {
@@ -123,28 +130,43 @@ fun RepositoryHandler.createRepository(project: Project) {
 
 }
 
-fun currentZonedDateTime() =
-    ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"))
-
+/**
+ * @param pubName Form the maven publication name in publishing extension together with variant
+ * @param variant To suffix the name of taaks and publication, so that multiple publications
+ * can co-exist
+ * @param pubComponent The component name to publish, it is usually "java" for ordinary jar
+ * archives, and "android" for Android AAR
+ */
 fun Project.publishingConfig(
-    project: Project,
-    pubName: String
+    pubName: String,
+    variant: String = "",
+    pubComponent: String = "java"
 ) {
 
-    val ext = (project as ExtensionAware).extensions
+    val variantCap = variant.capitalize()
+    val ext = (this as ExtensionAware).extensions
 
-    ext.findByType(PublishingExtension::class.java)?.config(project, pubName)
-    ext.findByType(BintrayExtension::class.java)?.config(project, pubName)
-    ext.findByType(SigningExtension::class.java)?.config(project, pubName)
+    ext.findByType(PublishingExtension::class.java)?.config(this, pubName, variantCap, pubComponent)
+    ext.findByType(SigningExtension::class.java)?.config(this, pubName, variantCap)
+    ext.findByType(BintrayExtension::class.java)?.config(this, pubName, variantCap)
 
 }
 
 fun PublishingExtension.config(
     project: Project,
-    pubName: String
+    pubName: String,
+    variant: String = "",
+    pubComponent: String = "java"
 ) {
+
+    val variantCap = variant.capitalize()
+
     publications {
-        createPublication(project, pubName)
+        createPublication(
+            project = project,
+            pubName = pubName,
+            pubComponent = pubComponent,
+            variant = variantCap)
     }
     repositories {
         createRepository(project)
@@ -152,11 +174,16 @@ fun PublishingExtension.config(
 
 }
 
+fun currentZonedDateTime() =
+    ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"))
+
 fun BintrayExtension.config(
     project: Project,
-    pubName: String
+    pubName: String,
+    variant: String = ""
     ) {
 
+    val variantCap = variant.capitalize()
     val pubConfig = PublishConfig(project)
     val labelList = pubConfig.bintrayLabels?.split(',') ?: emptyList()
     val labelArray = Array(labelList.size) { labelList[it] }
@@ -167,11 +194,11 @@ fun BintrayExtension.config(
 
     user = pubConfig.bintrayUser
     key = pubConfig.bintrayApiKey
-    setPublications(pubName)
+    setPublications("$pubName$variantCap")
 
     pkg.apply {
         repo = "maven"
-        name = project.name
+        name = pubConfig.artifactEyeD
         desc = pubConfig.pomDescription!!
         setLicenses(pubConfig.licenseName!!)
         websiteUrl = pubConfig.scmUrl!!
@@ -194,25 +221,27 @@ fun BintrayExtension.config(
             include("*.aar.asc")
             include("*.jar.asc")
         }
-        from("${project.buildDir}/publications/${pubName}").apply {
+        from("${project.buildDir}/publications/$pubName$variantCap").apply {
             include("pom-default.xml.asc")
             rename("pom-default.xml.asc",
-                "${project.name}-${pubConfig.artifactVersion}.pom.asc")
+                "${pubConfig.artifactEyeD}-${pubConfig.artifactVersion}.pom.asc")
         }
         into("${(pubConfig.artifactGroup as String)
-            .replace('.', '/')}/${project.name}/${pubConfig.artifactVersion}")
+            .replace('.', '/')}/${pubConfig.artifactEyeD}/${pubConfig.artifactVersion}")
     })
 
 }
 
 fun SigningExtension.config(
     project: Project,
-    pubName: String
+    pubName: String,
+    variant: String = ""
 ) {
 
+    val variantCap = variant.capitalize()
     val ext = (project as ExtensionAware).extensions
     val publishingExtension = ext.findByType(PublishingExtension::class.java)
 
-    publishingExtension?.let { sign(it.publications[pubName]) }
+    publishingExtension?.let { sign(it.publications["$pubName$variantCap"]) }
 
 }

@@ -25,7 +25,7 @@ class PublishConfig(project: Project) {
 
     val artifactGroup : String? by project
     val artifactId : String? by project
-    val artifactEyeD = artifactId
+    val artifactEyeD = artifactId?: project.name
     val artifactVersion : String? by project
     val pomDescription : String? by project
     val pomUrl : String? by project

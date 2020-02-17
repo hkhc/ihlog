@@ -16,10 +16,7 @@
  *
  */
 
-//import io.hkhc.gradle.allpublish.allPublish
-//import io.hkhc.gradle.allpublish.mavenPublication
-//import io.hkhc.gradle.allpublish.mavenRepository
-//import io.hkhc.gradle.allpublish.setup
+import io.hkhc.gradle.publishingConfig
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
@@ -27,16 +24,16 @@ plugins {
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
-    id("org.jetbrains.dokka-android") version "0.9.17"
+    id("org.jetbrains.dokka") version "0.10.1"
     id("digital.wup.android-maven-publish") version "3.6.2"
+    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
+    id("io.gitlab.arturbosch.detekt") version "1.5.1"
 //    id("io.hkhc.gradle.allpublish")
     `maven-publish`
     signing
     id("com.jfrog.bintray")
-
+    id("com.dorongold.task-tree") version "1.5"
 }
-
-val artifactId : String by project
 
 android {
     compileSdkVersion(28)
@@ -70,51 +67,31 @@ android.libraryVariants.configureEach {
 
     System.out.println("android publishing variant ${variantName}")
 
+    var dokka = tasks.register("dokka$variantName", DokkaTask::class) {
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
+        description = "Generate Kotlin docs with Dokka for variant $variantName"
+        outputFormat = "html"
+        outputDirectory = "$buildDir/dokka"
+    }
+
     if (variantName=="Release") {
 
         System.out.println("android setup publishing for ${variantName}")
 
-        tasks.withType<DokkaTask> {
-            outputFormat = "html"
-            outputDirectory = "$buildDir/javadoc"
-        }
-
-        tasks.register<DokkaTask>("dokka$variantName") {
+        tasks.register("dokkaJar$variantName", Jar::class) {
             group = JavaBasePlugin.DOCUMENTATION_GROUP
-            description = "Generate KDoc for build $variantName"
-            if (outputDirectory.isEmpty())
-                outputDirectory = artifactId
-            else
-                outputDirectory = "$outputDirectory/${artifactId}"
+            description = "Assembles Kotlin docs with Dokka to Jar for variant $variantName"
 
+            from(dokka)
+            dependsOn(dokka)
         }
 
-        // TODO enable default of each of them
-//        allPublish {
-//            documentTask.set(tasks.named<DokkaTask>("dokka$variantName"))
-//            sourceSet.set(files(javaCompileProvider.get().source))
-//            publicationName.set("lib${variantName}")
-//            publishComponent.set(components["android"])
-//            label.set("aar")
-//            System.out.println("ALL_PUBLISH extension setup")
-//        }
+        tasks.register("sourcesJar${variantName}", Jar::class) {
+            description = "Create archive of source code for the binary for variant $variantName"
+            from(files(javaCompileProvider.get().source))
+        }
 
-//        publishing {
-//            publications {
-//                mavenPublication(project)
-//            }
-//            repositories {
-//                mavenRepository(project)
-//            }
-//        }
-//
-//        signing {
-//            sign(publishing.publications.mavenPublication(project))
-//        }
-//
-//        bintray {
-//            setup()
-//        }
+        project.publishingConfig("lib", variantName, "android")
 
     }
 

@@ -28,6 +28,7 @@ plugins {
     `maven-publish`
     signing
     id("com.jfrog.bintray")
+    id("com.dorongold.task-tree") version "1.5"
 
 }
 
@@ -56,14 +57,13 @@ detekt {
 
 
 val sourcesJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("sources")
+    description = "Create archive of source code for the binary"
     from(sourceSets.getByName("main").allSource)
 }
 
 val dokkaJar by tasks.registering(Jar::class) {
     group = JavaBasePlugin.DOCUMENTATION_GROUP
     description = "Assembles Kotlin docs with Dokka to Jar"
-    archiveClassifier.set("javadoc")
     from(tasks.dokka)
     dependsOn(tasks.dokka)
 }
@@ -73,14 +73,7 @@ artifacts {
     artifacts.add("archives", dokkaJar)
 }
 
-project.publishingConfig(project, "lib")
-
-//publishing { config(project, pubName) }
-//
-//bintray { config(project, pubName)}
-//
-//signing { config(project, pubName) }
-
+project.publishingConfig("lib")
 
 dependencies {
     implementation(kotlin("stdlib-jdk8", "1.3.61"))
