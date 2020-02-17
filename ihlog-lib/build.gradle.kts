@@ -16,9 +16,7 @@
  *
  */
 import io.hkhc.gradle.PublishConfig
-import io.hkhc.gradle.createPublication
-import io.hkhc.gradle.createRepository
-import io.hkhc.gradle.setupBintray
+import io.hkhc.gradle.publishingConfig
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
@@ -75,24 +73,13 @@ artifacts {
     artifacts.add("archives", dokkaJar)
 }
 
-val pubName = "lib"
+project.publishingConfig(project, "lib")
 
-publishing {
-    publications {
-        createPublication(project, "lib", pubConfig, this)
-    }
-    repositories {
-        createRepository(project, this, pubConfig)
-    }
-}
-
-bintray {
-    setupBintray(this, pubName, pubConfig)
-}
-
-signing {
-    sign(publishing.publications[pubName])
-}
+//publishing { config(project, pubName) }
+//
+//bintray { config(project, pubName)}
+//
+//signing { config(project, pubName) }
 
 
 dependencies {
