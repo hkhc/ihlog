@@ -30,24 +30,6 @@ import org.gradle.kotlin.dsl.get
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-/*
- * Copyright (c) 2020. Herman Cheung
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- *
- */
-
 fun createPublication(
     project: Project,
     pubName: String,
@@ -145,6 +127,9 @@ fun currentZonedDateTime() =
 
 fun setupBintray(bintray: BintrayExtension, pubName: String, pubConfig: PublishConfig) {
 
+    val labelList = pubConfig.bintrayLabels?.split(',') ?: emptyList()
+    val labelArray = Array(labelList.size) { labelList[it] }
+
     with(bintray) {
 
         override = true
@@ -170,7 +155,7 @@ fun setupBintray(bintray: BintrayExtension, pubName: String, pubConfig: PublishC
                 released = currentZonedDateTime()
                 vcsTag = pubConfig.artifactVersion!!
             }
-            setLabels("jar")
+            setLabels(*labelArray)
         }
 
         // Bintray requires our private key in order to sign archives for us. I don't want to share
@@ -190,7 +175,5 @@ fun setupBintray(bintray: BintrayExtension, pubName: String, pubConfig: PublishC
         })
 
     }
-
-
 
 }

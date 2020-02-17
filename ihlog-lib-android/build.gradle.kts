@@ -16,10 +16,10 @@
  *
  */
 
-import io.hkhc.gradle.allpublish.allPublish
-import io.hkhc.gradle.allpublish.mavenPublication
-import io.hkhc.gradle.allpublish.mavenRepository
-import io.hkhc.gradle.allpublish.setup
+//import io.hkhc.gradle.allpublish.allPublish
+//import io.hkhc.gradle.allpublish.mavenPublication
+//import io.hkhc.gradle.allpublish.mavenRepository
+//import io.hkhc.gradle.allpublish.setup
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
@@ -29,7 +29,7 @@ plugins {
     id("kotlin-kapt")
     id("org.jetbrains.dokka-android") version "0.9.17"
     id("digital.wup.android-maven-publish") version "3.6.2"
-    id("io.hkhc.gradle.allpublish")
+//    id("io.hkhc.gradle.allpublish")
     `maven-publish`
     signing
     id("com.jfrog.bintray")
@@ -99,22 +99,22 @@ android.libraryVariants.configureEach {
 //            System.out.println("ALL_PUBLISH extension setup")
 //        }
 
-        publishing {
-            publications {
-                mavenPublication(project)
-            }
-            repositories {
-                mavenRepository(project)
-            }
-        }
-
-        signing {
-            sign(publishing.publications.mavenPublication(project))
-        }
-
-        bintray {
-            setup()
-        }
+//        publishing {
+//            publications {
+//                mavenPublication(project)
+//            }
+//            repositories {
+//                mavenRepository(project)
+//            }
+//        }
+//
+//        signing {
+//            sign(publishing.publications.mavenPublication(project))
+//        }
+//
+//        bintray {
+//            setup()
+//        }
 
     }
 
@@ -123,7 +123,7 @@ android.libraryVariants.configureEach {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(project(":ihlog-lib"))
+    implementation(project(":ihlog"))
     implementation(kotlin("stdlib-jdk8", "1.3.21"))
     testImplementation("junit:junit:4.12")
     testImplementation("org.assertj:assertj-core:3.11.1")

@@ -48,5 +48,6 @@ class PublishConfig(project: Project) {
 
     val bintrayUser: String? by project
     val bintrayApiKey: String? by project
+    val bintrayLabels: String? by project // comma delimited
 
 }
