@@ -50,7 +50,7 @@ class FactoryPropertiesLoader {
             prop.load(it)
             val providerClassName = prop.getProperty(PROVIDER_KEY)
             providerClassName?.let {
-                return Class.forName(providerClassName).newInstance() as IHLogProvider
+                return Class.forName(providerClassName).getDeclaredConstructor().newInstance() as IHLogProvider
             }
         }
         return null
