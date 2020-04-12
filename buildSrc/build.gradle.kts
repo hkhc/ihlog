@@ -20,20 +20,6 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "io.hkhc.gradle.allPublish"
-version = "1.0"
-
-gradlePlugin {
-    plugins {
-        register("allPublishPlugin") {
-            id = "io.hkhc.gradle.allpublish"
-            displayName = "All Publish Plugin"
-            description  = "Publish artifact to both bintray and maven"
-            implementationClass = "io.hkhc.gradle.allpublish.AllPublishPlugin2"
-        }
-    }
-}
-
 repositories {
     jcenter()
     maven {
@@ -42,6 +28,4 @@ repositories {
 }
 
 dependencies {
-    implementation("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
-    implementation("org.redundent:kotlin-xml-builder:1.6.0")
 }
