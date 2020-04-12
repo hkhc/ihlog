@@ -1,0 +1,5 @@
+name: ihlog-android
+version: 0.5.1
+packaging: aar
+description: Easy Kotlin Logging Library for Android
+

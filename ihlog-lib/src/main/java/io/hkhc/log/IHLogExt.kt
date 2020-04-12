@@ -16,17 +16,13 @@
  *
  */
 
+@file:Suppress("TooManyFunctions")
+@file:JvmName("Logger")
 package io.hkhc.log
 
-sealed class Severity(val value: Int) {
+import io.hkhc.log.internal.LogFactory
 
-    fun shouldBeFilteredBy(p: Severity) =
-        p.value > value
-
-    object Trace : Severity(1)
-    object Debug : Severity(2)
-    object Info : Severity(3)
-    object Warn : Severity(4)
-    object Error : Severity(5)
-    object Fatal : Severity(6)
-}
+val Any.l: IHLog
+    get() {
+        return LogFactory.getLog(this::class.java)
+    }

@@ -1,0 +1,16 @@
+group: io.hkhc.log
+version: 0.5.1
+description: Easy Kotlin Logging Library
+
+licenses:
+  - name: Apache-2.0
+    dist: repo
+
+developers:
+  - id: hkhc
+    name: Herman Cheung
+    email: herman.kh.cheung+ihlog@gmail.com
+
+scm:
+  repoType: github.com
+  repoName: hkhc/ihlog

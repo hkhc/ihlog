@@ -35,7 +35,7 @@ private fun getTag(): String {
     return ""
 }
 
-fun File.log(severity: Severity, tag: String?, maxSize: Int) {
+fun File.log(priority: Priority, tag: String?, maxSize: Int = MAX_FILE_LOG_SIZE) {
 
     val ex = Exception()
     val parentTag = tag ?: TagMaker.getClassNameAbbr(ex.stackTrace[1].className)
@@ -45,19 +45,19 @@ fun File.log(severity: Severity, tag: String?, maxSize: Int) {
         val len = it.length
         if (outputtedSize != maxSize) {
             if (outputtedSize + len > maxSize) {
-                l.log(severity, parentTag, it.substring(0, maxSize - outputtedSize))
+                l.log(priority, parentTag, it.substring(0, maxSize - outputtedSize))
                 outputtedSize = maxSize
             } else {
-                l.log(severity, parentTag, it)
+                l.log(priority, parentTag, it)
                 outputtedSize += len
             }
         }
     }
 }
 
-fun File.trace(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Trace, getTag(), maxSize)
-fun File.info(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Info, getTag(), maxSize)
-fun File.debug(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Debug, getTag(), maxSize)
-fun File.warn(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Warn, getTag(), maxSize)
-fun File.err(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Error, getTag(), maxSize)
-fun File.fatal(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Severity.Fatal, getTag(), maxSize)
+fun File.trace(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Priority.Trace, getTag(), maxSize)
+fun File.info(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Priority.Info, getTag(), maxSize)
+fun File.debug(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Priority.Debug, getTag(), maxSize)
+fun File.warn(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Priority.Warn, getTag(), maxSize)
+fun File.err(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Priority.Error, getTag(), maxSize)
+fun File.fatal(maxSize: Int = MAX_FILE_LOG_SIZE) = log(Priority.Fatal, getTag(), maxSize)

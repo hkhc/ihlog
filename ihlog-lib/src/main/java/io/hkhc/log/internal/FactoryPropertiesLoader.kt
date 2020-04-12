@@ -24,12 +24,13 @@ import java.util.Properties
 
 class FactoryPropertiesLoader {
 
-    private val propertiesPath = "/ihlog.properties"
+    private val PROPERTY_PATH = "/ihlog.properties"
+    private val PROVIDER_KEY = "provider"
 
-    fun getStreamFromResource(path: String = propertiesPath) =
+    fun getStreamFromResource(path: String = PROPERTY_PATH) =
         this::class.java.getResourceAsStream(path)
 
-    fun getProviderClassName(path: String = propertiesPath): String? {
+    fun getProviderClassName(path: String = PROPERTY_PATH): String? {
 
         val prop = Properties()
         var result: String? = null
@@ -37,17 +38,17 @@ class FactoryPropertiesLoader {
         getStreamFromResource(path)?.let {
             try {
                 prop.load(it)
-                result = prop.getProperty("provider")
+                result = prop.getProperty(PROVIDER_KEY)
             } catch (e: IOException) { }
         }
         return result
     }
 
-    fun loadProvider(path: String = propertiesPath): IHLogProvider? {
+    fun loadProvider(path: String = PROPERTY_PATH): IHLogProvider? {
         val prop = Properties()
         getStreamFromResource(path)?.let {
             prop.load(it)
-            val providerClassName = prop.getProperty("provider")
+            val providerClassName = prop.getProperty(PROVIDER_KEY)
             providerClassName?.let {
                 return Class.forName(providerClassName).newInstance() as IHLogProvider
             }

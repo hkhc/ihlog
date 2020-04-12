@@ -19,27 +19,43 @@
 package io.hkhc.log.internal
 
 import io.hkhc.log.IHLog
-import io.hkhc.log.LogSettings
-import io.hkhc.log.providers.StdioLogProvider
+import io.hkhc.log.IHLogProvider
+import io.hkhc.log.Priority
+import io.hkhc.log.providers.NullLogProvider
+import io.hkhc.log.providers.PriorityLog
 
 // TODO limit the size of map
 object LogFactory {
 
     private val logMap = mutableMapOf<Class<out Any>, IHLog>()
 
+    var logLevel: Priority = Priority.Warn
+
+    var defaultProvider: IHLogProvider? = null
+        set(value) {
+            field = value
+            logMap.clear()
+        }
+
+    var metaTag: String = TagMaker.metaTag
+        set(value) {
+            field = value
+            logMap.clear()
+        }
+
     fun getCurrentDefaultProvider() =
-        LogSettings.defaultProvider ?: (
-            FactoryPropertiesLoader().loadProvider()?.also {
-                LogSettings.defaultProvider = it
-            } ?: StdioLogProvider()
-        )
+        defaultProvider ?: (
+                FactoryPropertiesLoader().loadProvider()?.also {
+                    defaultProvider = it
+                } ?: NullLogProvider()
+                )
 
     internal fun createTag(key: Class<out Any>): String {
         return TagMaker.getLogTag(key)
     }
 
     internal fun getNewLog(key: Class<out Any>) =
-            getCurrentDefaultProvider().getLog(createTag(key))
+        PriorityLog(getCurrentDefaultProvider().getLog(createTag(key)))
 
     fun getLog(key: Class<out Any>): IHLog {
         return logMap[key] ?: (getNewLog(key).also {
@@ -52,7 +68,9 @@ object LogFactory {
      * meta tags, and default log provider. It is mainly for unit tests and not for production
      * use.
      */
-    fun reset() {
+    fun clear() {
         logMap.clear()
+        metaTag = TagMaker.metaTag
+        defaultProvider = null
     }
 }

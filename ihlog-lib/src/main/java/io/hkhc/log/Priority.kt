@@ -18,20 +18,15 @@
 
 package io.hkhc.log
 
-import io.hkhc.log.internal.LogFactory
+sealed class Priority(val value: Int) {
 
-object LogSettings {
+    fun shouldBeFilteredBy(p: Priority) =
+        p.value > value
 
-    var defaultProvider: IHLogProvider? = null
-        set(value) {
-            field = value
-            LogFactory.reset()
-        }
-
-    var logLevel: Severity = Severity.Debug
-    var metaTag: String = ""
-        set(value) {
-            field = value
-            LogFactory.reset()
-        }
+    object Trace : Priority(1)
+    object Debug : Priority(2)
+    object Info : Priority(3)
+    object Warn : Priority(4)
+    object Error : Priority(5)
+    object Fatal : Priority(6)
 }

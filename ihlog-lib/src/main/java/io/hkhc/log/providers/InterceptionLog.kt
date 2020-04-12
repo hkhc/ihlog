@@ -20,7 +20,7 @@ package io.hkhc.log.providers
 
 import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
-import io.hkhc.log.Severity
+import io.hkhc.log.Priority
 
 /**
  * A useless [IHLog] that warp up another.
@@ -35,7 +35,7 @@ class InterceptionLog(defaultTag: String) : AbstractIHLog(defaultTag) {
         this.delegate = delegate
     }
 
-    override fun log(priority: Severity, tag: String?, message: String) {
+    override fun log(priority: Priority, tag: String?, message: String) {
         delegate.log(priority, tag, message)
     }
 }

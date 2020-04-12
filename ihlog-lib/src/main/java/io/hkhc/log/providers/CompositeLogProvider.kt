@@ -21,7 +21,7 @@ package io.hkhc.log.providers
 import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
-import io.hkhc.log.Severity
+import io.hkhc.log.Priority
 
 /**
  * Log provider for log to redirect log to multiple [IHLog] instances. All of them share the same
@@ -40,7 +40,7 @@ class CompositeLogProvider(vararg val providers: IHLogProvider) : IHLogProvider 
 
     class CompositeLog(defaultTag: String, var loggers: Array<IHLog>) : AbstractIHLog(defaultTag) {
 
-        override fun log(priority: Severity, tag: String?, message: String) {
+        override fun log(priority: Priority, tag: String?, message: String) {
             loggers.forEach { it.log(priority, tag, message) }
         }
     }

@@ -19,7 +19,7 @@
 package io.hkhc.log.providers
 
 import io.hkhc.log.MockTimeSource
-import io.hkhc.log.Severity
+import io.hkhc.log.Priority
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -36,7 +36,7 @@ class MoreTagLogTest {
         val moreTagLog = delegateLog.moreTag("EXTRA")
 
         // when
-        moreTagLog.log(Severity.Debug, null, "Hello")
+        moreTagLog.log(Priority.Debug, null, "Hello")
 
         // then
 

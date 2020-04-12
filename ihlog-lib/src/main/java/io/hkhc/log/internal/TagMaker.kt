@@ -18,9 +18,35 @@
 
 package io.hkhc.log.internal
 
-import io.hkhc.log.LogSettings
+import io.hkhc.log.MetaTag
+import io.hkhc.log.providers.SimpleMetaTag
+import java.util.StringTokenizer
 
 object TagMaker {
+
+    var metaTagPolicy: MetaTag = SimpleMetaTag("")
+        set(value) {
+            field = value
+            mMetaTag = field.getTag()
+        }
+
+    private var mMetaTag: String = ""
+
+    val metaTag: String
+        get() = mMetaTag
+
+    fun getPackageNameAbbr(packageName: String): String {
+
+        val builder = StringBuilder()
+
+        val token = StringTokenizer(packageName, ".")
+        while (token.hasMoreTokens()) {
+            val t = token.nextToken()
+            builder.append(t[0].toUpperCase())
+        }
+
+        return builder.toString()
+    }
 
     /**
      * Given a class object, create a abbreviate string that represent it.
@@ -85,7 +111,7 @@ object TagMaker {
      * @return
      */
     fun getLogTag(clazz: Class<*>): String {
-        val delimiter = if (LogSettings.metaTag == "") "" else "_"
-        return "${LogSettings.metaTag}${delimiter}${getClassNameAbbr(clazz.name)}"
+        val delimiter = if (metaTag == "") "" else "_"
+        return "${metaTag}${delimiter}${getClassNameAbbr(clazz.name)}"
     }
 }

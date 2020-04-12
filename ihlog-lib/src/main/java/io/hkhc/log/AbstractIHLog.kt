@@ -25,14 +25,14 @@ abstract class AbstractIHLog(protected var defaultTag: String = "LOG") : IHLog {
 
     // TODO we shall not resolve the lambda here. It may cause unnecessary lambda execution if log is filtered
 
-    abstract override fun log(priority: Severity, tag: String?, message: String)
+    abstract override fun log(priority: Priority, tag: String?, message: String)
 
     override fun getLogTag(): String = defaultTag
 
     override fun exception(tag: String?, message: String?, throwable: Throwable) {
 
         message?.let {
-            log(Severity.Error, tag, it)
+            log(Priority.Error, tag, it)
         }
 
         logExceptionBody(tag, throwable)
@@ -44,6 +44,6 @@ abstract class AbstractIHLog(protected var defaultTag: String = "LOG") : IHLog {
         val printWriter = PrintWriter(stringWriter, false)
         throwable.printStackTrace(printWriter)
         printWriter.flush()
-        log(Severity.Error, tag, stringWriter.toString())
+        log(Priority.Error, tag, stringWriter.toString())
     }
 }

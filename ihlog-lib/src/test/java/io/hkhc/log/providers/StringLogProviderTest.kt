@@ -19,7 +19,7 @@
 package io.hkhc.log.providers
 
 import io.hkhc.log.MockTimeSource
-import io.hkhc.log.Severity
+import io.hkhc.log.Priority
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert
 import org.junit.Test
@@ -49,7 +49,7 @@ class StringLogProviderTest {
         val provider = newLogProvider(0)
 
         // when
-        provider.getLog("LOG").log(Severity.Debug, null, "Hello")
+        provider.getLog("LOG").log(Priority.Debug, null, "Hello")
 
         assertThat(provider.getLogString()).isEqualTo("01-01 08:00:00.000  -/LOG d/Hello\n")
     }

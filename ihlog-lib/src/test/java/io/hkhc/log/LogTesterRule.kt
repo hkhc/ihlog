@@ -34,7 +34,7 @@ class LogTesterRule : TestRule {
     class LogTesterStatement(var writer: StringWriter, var base: Statement?) : Statement() {
         override fun evaluate() {
             LogSettings.defaultProvider = StringLogProvider(writer, MockTimeSource(0))
-            LogSettings.logLevel = Severity.Trace
+            LogSettings.logLevel = Priority.Trace
             base?.evaluate()
         }
     }

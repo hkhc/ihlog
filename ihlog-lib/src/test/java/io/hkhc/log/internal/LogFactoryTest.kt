@@ -29,7 +29,7 @@ class LogFactoryTest {
 
     @Before
     fun setUp() {
-        LogFactory.reset()
+//        LogFactory.reset()
     }
 
     @Test
