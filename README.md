@@ -22,12 +22,12 @@ dependencies {
 }
 ```
 
-The library is available at both Maven Central and JCenter, so chances are that you don't need to 
+The library is available at both Maven Central and JCenter, so chances are that you don't need to
 change the `repository` settings in Gradle script.
 
 ## Basic usage
 
-By default the log line issued by this library will be sent to Android logcat. It can be changed and 
+By default the log line issued by this library will be sent to Android logcat. It can be changed and
 we will come back to this later.
 
 ### Log a line
@@ -57,15 +57,15 @@ fun testOfLog() {
 
 [[TDOO]] does it work as top level statements?
 
-The logging action is as simple as it could possibly be. We don't need to declare anything besides import, because it is 
-implemented as Kotlin extension. When method `testOfLog` is executed, the 
-following log line simpler to the following can be observed in logcat. 
+The logging action is as simple as it could possibly be. We don't need to declare anything besides import, because it is
+implemented as Kotlin extension. When method `testOfLog` is executed, the
+following log line simpler to the following can be observed in logcat.
 
 ```
 03-03 02:04:49.949  1224  5126 D HeWo: Hello. Thanks for using IHLog
 ```
 
-where `HeWo` is an automatically generated log tag. It is an abbreviation of the class `HelloWorld`. 
+where `HeWo` is an automatically generated log tag. It is an abbreviation of the class `HelloWorld`.
 
 Code to log for other severity levels are similar
 
@@ -134,7 +134,7 @@ Stacktrace of the exception is generated and logged line-by-line
 
 ### Filtering log
 
-We may filter log by log severity level anytime. 
+We may filter log by log severity level anytime.
 
 ```kotlin
 LogSettings.logLevel = Severity.ERROR
@@ -143,7 +143,7 @@ LogSettings.logLevel = Severity.ERROR
 It take effect from the next log invocation.
 
 THe severity is in the increasing order of the following:
-- Trace 
+- Trace
 - Debug
 - Info
 - Warn
@@ -153,7 +153,7 @@ THe severity is in the increasing order of the following:
 
 ### Log with Lambda
 
-When we have the capability of filtering logs, we start to worry that our log invocation peform 
+When we have the capability of filtering logs, we start to worry that our log invocation peform
 unnecessary work. For example,
 
 ```kotlin
@@ -169,7 +169,7 @@ We may use lambda to defer the processing of the log content:
 debug { "The current balance is ${account.balance}." }
 ```
 
-Then the actual evaluation of the string is deferred until it is needed. And no cost is paid for 
+Then the actual evaluation of the string is deferred until it is needed. And no cost is paid for
 filtered log.
 
 ### Tag Creation
@@ -178,8 +178,8 @@ In its simplist form, the library create the tag string for logging implicitly. 
 class name that the log methods are invoked. The class name is transformed into abbreviated form
 for berevity of log output.
 
-Why do we want to abbreviate the class name? The class name is usually long for any non-trivial app. 
-Especially when the inner classes or Companion classes are involved. It may even exceed the tag 
+Why do we want to abbreviate the class name? The class name is usually long for any non-trivial app.
+Especially when the inner classes or Companion classes are involved. It may even exceed the tag
 length limit of 23 characters on pre Android N devices.
 
 Essentially, the tag string is generated from the simple class name (i.e. regardless the package)
@@ -187,8 +187,8 @@ by two rules:
 
 ###### Rule 1
 
-When there are not more than 2 capital characters in the name, then the tag is composed by taking 
-each of the captial characters and the following small letter or digital, and keep the whole tag within 
+When there are not more than 2 capital characters in the name, then the tag is composed by taking
+each of the captial characters and the following small letter or digital, and keep the whole tag within
 4 characters.. For example,
 
 | class name   | tag    |
@@ -203,17 +203,17 @@ each of the captial characters and the following small letter or digital, and ke
 When there are more than 2 capitals letters, only capital characters are extracted
 
 | class name             | tag         |
-| ----------             | ---         | 
+| ----------             | ---         |
 | `NullPointerException` | `NPE`       |
 | `ItIsAGoodDayToDie`    | `IIAGDTD`   |
 
 ###### Additional Rule : Inner class and Companion class
 
-The tag for inner class is defined by combined by the abbreviation of the outer class name and the 
+The tag for inner class is defined by combined by the abbreviation of the outer class name and the
 inner class name. E.g.
 
 | class name             | tag         |
-| ----------             | ---         | 
+| ----------             | ---         |
 | `HelloWorld.Listener`  | `HeWoLi`    |
 | `View.OnClickListener` | `ViOCL`     |
 
@@ -223,7 +223,7 @@ outer class. IHLog make exception to the Companion class not including the "C" i
 ### Meta tag
 
 We may specific a global prefix to the tag, known as "Meta Tag". so taht all tags in the process
-is prepended with the meta tag. With meta tag, we can easily filter log output and focus on what is 
+is prepended with the meta tag. With meta tag, we can easily filter log output and focus on what is
 generated by our app. For example,
 
 ```kotlin
@@ -260,40 +260,40 @@ set to use `AndroidLogProvider` which effectively means standard Android Log API
 
 ### `LogSettings`
 
-Alternatively, we may use the singleton class `LogSettings` to change the cconfiguration on the fly. 
+Alternatively, we may use the singleton class `LogSettings` to change the cconfiguration on the fly.
 It has several properties, the library take effect immediately when the properties changed.
 
 | property             | purpose         |
-| --------             | -------         | 
+| --------             | -------         |
 | `logLevel`  | filtering of log    |
 | `metaTag`   | Add a prefix globally to all tags. If it is empty string, then nothing is prepended to the log tag. If it is non-empty, the log tags become `metaTag + "_" + abbrivated tag` |
 | `defaultProvider` | instance of a `LogProvider`, to change the destination of log |
 
 ## Log Providers
 
-IHLog work with Android Log API out of the box. On the other hand, we may configure it to use different 
+IHLog work with Android Log API out of the box. On the other hand, we may configure it to use different
 targets with `ihlog.properties` file or `LogSettings` class object. You may even implement your own
 target.
 
 Each of the target is handled by a class that implemented `LogProvider` interface. It is responsible
 for creating object that implements `IHLog` interface which keep the state of log specific state.
 
-There are also some classes in the library that warp up other IHLog objects to augment their 
+There are also some classes in the library that warp up other IHLog objects to augment their
 functionalities.
 
 ### `AndroidLogProvider`
 
 `AndroidLogProvider` maps the log call to standard Android Log API. There are a few things to note:
 
-- There is no `trace` log level, so both `trace` and `info` level are mapped to `info` level of 
+- There is no `trace` log level, so both `trace` and `info` level are mapped to `info` level of
 Android Log.
 - Before Android N, tag string is limited to 23 characters. There is no such limitation for newer OS.
-IHLog library tries to accept longer tag string on pre-N devices, by moving the part of tag string 
+IHLog library tries to accept longer tag string on pre-N devices, by moving the part of tag string
 over 23 characters to log body. For example, for the call
 
 ```kotlin
 // 30 character long tag
-debug("012345678901234567890123456789", "This is a log line") 
+debug("012345678901234567890123456789", "This is a log line")
 ```
 
 the logcat output for pre-N devices will look like this:
