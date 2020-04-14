@@ -15,26 +15,43 @@
  *
  *
  */
-import io.hkhc.gradle.PublishConfig
-import io.hkhc.gradle.publishingConfig
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.dokka") version "0.10.1"
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
     id("io.gitlab.arturbosch.detekt") version "1.5.1"
-//    id("fr.coppernic.versioning") version "3.1.2"
-    `maven-publish`
-    signing
-    id("com.jfrog.bintray")
+    id("io.hkhc.simplepublisher")
+    // for build script debugging
     id("com.dorongold.task-tree") version "1.5"
-
 }
 
-val pubConfig = PublishConfig(project)
+/*
+ It is needed to make sure every version of java compiler to generate same kind of bytecode.
+ Without it and build this with java 8+ compiler, then the project build with java 8
+ will get error like this:
+   > Unable to find a matching variant of <your-artifact>:
+      - Variant 'apiElements' capability <your-artifact>:
+          - Incompatible attributes:
+              - Required org.gradle.jvm.version '8' and found incompatible value '13'.
+              - Required org.gradle.usage 'java-runtime' and found incompatible value 'java-api'.
+              ...
+ */
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 tasks {
+
+    /*
+    Without this Kotlin generates java 6 bytecode, which is hardly fatal.
+     */
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
     dokka {
         outputFormat = "html"
         outputDirectory = "$buildDir/dokka"
@@ -55,29 +72,13 @@ detekt {
     config = files("default-detekt-config.yml")
 }
 
-
-val sourcesJar by tasks.registering(Jar::class) {
-    description = "Create archive of source code for the binary"
-    from(sourceSets.getByName("main").allSource)
+simplyPublish {
+    useGpg = true
 }
-
-val dokkaJar by tasks.registering(Jar::class) {
-    group = JavaBasePlugin.DOCUMENTATION_GROUP
-    description = "Assembles Kotlin docs with Dokka to Jar"
-    from(tasks.dokka)
-    dependsOn(tasks.dokka)
-}
-
-artifacts {
-    artifacts.add("archives", sourcesJar)
-    artifacts.add("archives", dokkaJar)
-}
-
-project.publishingConfig("lib")
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8", "1.3.61"))
+    implementation(kotlin("stdlib-jdk8", "1.3.70"))
     testImplementation("junit:junit:4.12")
-    testImplementation("org.assertj:assertj-core:3.11.1")
+    testImplementation("org.assertj:assertj-core:3.12.2")
     testImplementation("io.mockk:mockk:1.9.3")
 }

@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2019. Herman Cheung
  *
@@ -69,14 +68,15 @@ buildscript {
         google()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.5.3")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
-//        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.10.1")
+        classpath("com.android.tools.build:gradle:3.6.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.71")
     }
 
 }
 
-
+plugins {
+    id("io.hkhc.simplepublisher")  version "0.3.3.2"
+}
 
 subprojects {
 
@@ -88,6 +88,3 @@ subprojects {
 
 }
 
-tasks.register<Delete>("clean") {
-    delete(rootProject.buildDir)
-}
