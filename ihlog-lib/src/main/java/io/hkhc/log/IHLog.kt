@@ -68,4 +68,5 @@ interface IHLog {
     fun err(tag: String, lambda: () -> String) = log(Priority.Error, tag, lambda)
     fun err(lambda: () -> String) = log(Priority.Error, null, lambda)
     fun err(tag: String, throwable: Throwable) = exception(tag, null, throwable)
+    fun err(throwable: Throwable) = exception(null, null, throwable)
 }
