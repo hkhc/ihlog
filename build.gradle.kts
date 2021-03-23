@@ -77,7 +77,7 @@ val kotlin_version by extra("1.4.31")
 
 plugins {
     kotlin("jvm") version "1.3.72"
-    id("io.hkhc.jarbird")  version "0.5.0.1"
+    id("io.hkhc.jarbird")  version "0.5.0.2"
 }
 
 repositories {
