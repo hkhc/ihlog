@@ -1,3 +1,4 @@
+include(":ihlog-lib-gradle")
 /**
  * The pluginManagement block is need to load plugin from maven local repository.
  * it has to be the first block in settings.gradle.kts
@@ -7,6 +8,7 @@
 pluginManagement {
     repositories {
         mavenLocal()
+        jcenter()
         gradlePluginPortal()
     }
 }
@@ -30,3 +32,4 @@ rootProject.name = "ihlog-root"
 // Change child project name
 project(":ihlog-lib").name="ihlog"
 project(":ihlog-lib-android").name="ihlog-android"
+//project(":ihlog-lib-gradle").name="ihlog-gradle"

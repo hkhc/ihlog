@@ -27,7 +27,7 @@ import io.hkhc.log.Priority
  * Log provider for log to redirect log to multiple [IHLog] instances. All of them share the same
  * tag.
  *
- * @property providers List of [LogProvider]. [IHLog] object is created from each of those
+ * @property providers List of [IHLogProvider]. [IHLog] object is created from each of those
  * providers. Every log line is redirected all of those [IHLog] object.
  *
  */

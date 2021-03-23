@@ -22,7 +22,8 @@
 
 buildscript {
 
-//    ext {
+val kotlin_version by extra("1.4.31")
+    //    ext {
 //
 //        /* Platform and gradle plugin version */
 //        kotlin_version = "1.3.61"
@@ -69,13 +70,18 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.6.3")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 
 }
 
 plugins {
-    id("io.hkhc.simplepublisher")  version "0.4.0.2"
+    kotlin("jvm") version "1.3.72"
+    id("io.hkhc.jarbird")  version "0.5.0.1"
+}
+
+repositories {
+    jcenter() // needed by dokka
 }
 
 subprojects {

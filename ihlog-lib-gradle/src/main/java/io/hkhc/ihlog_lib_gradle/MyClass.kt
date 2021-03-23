@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2020. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,7 @@
  *
  */
 
-plugins {
-    `kotlin-dsl`
-}
+package io.hkhc.ihlog_lib_gradle
 
-repositories {
-    jcenter()
-//    maven {
-//        url = uri("https://plugins.gradle.org/m2/")
-//    }
-}
-
-dependencies {
+class MyClass {
 }

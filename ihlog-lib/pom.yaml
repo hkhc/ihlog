@@ -1,3 +1,4 @@
-name: ihlog
-version: 0.5.1
+artifactId: ihlog
+version: 0.5.3-SNAPSHOT
 packaging: jar
+

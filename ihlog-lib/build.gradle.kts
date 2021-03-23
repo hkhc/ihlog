@@ -18,11 +18,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
+//repositories {
+//    mavenLocal()
+//}
+
 plugins {
     kotlin("jvm")
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
     id("io.gitlab.arturbosch.detekt") version "1.5.1"
-    id("io.hkhc.simplepublisher")
+    id("io.hkhc.jarbird")
     // for build script debugging
     id("com.dorongold.task-tree") version "1.5"
 }
@@ -52,10 +56,10 @@ tasks {
         kotlinOptions.jvmTarget = "1.8"
     }
 
-    dokka {
-        outputFormat = "html"
-        outputDirectory = "$buildDir/dokka"
-    }
+//    dokka {
+//        outputFormat = "html"
+//        outputDirectory = "$buildDir/dokka"
+//    }
 }
 
 ktlint {
@@ -72,9 +76,12 @@ detekt {
     config = files("default-detekt-config.yml")
 }
 
-simplyPublish {
-    useGpg = true
-}
+//jarbird {
+//    pub {
+//        useGpg = true
+////        pubComponent = "kotlin"
+//    }
+//}
 
 dependencies {
     implementation(kotlin("stdlib-jdk8", "1.3.70"))

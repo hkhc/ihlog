@@ -16,33 +16,56 @@
  *
  */
 
+buildscript {
+    repositories {
+        // needed by dokka
+        jcenter()
+    }
+    dependencies {
+    }
+}
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
-    // "io.hkhc.simplepublisher" must be after "com.android.library"
-    // so that libraryVariants is configured before simplePublisher
-    id("io.hkhc.simplepublisher")
-    id("digital.wup.android-maven-publish") version "3.6.2"
+    // "io.hkhc.jarbird" must be after "com.android.library"
+    // so that libraryVariants is configured before jarbird
+    id("io.hkhc.jarbird")
+    id("org.jetbrains.dokka")
+//    id("digital.wup.android-maven-publish") version "3.6.2"
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
     id("io.gitlab.arturbosch.detekt") version "1.5.1"
     // for build script debugging
     id("com.dorongold.task-tree") version "1.5"
 }
 
+repositories {
+    jcenter()
+}
+
 tasks {
-    dokka {
-        outputFormat = "html"
-        outputDirectory = "$buildDir/dokka"
-        // set true to omit intra-project dependencies
-        disableAutoconfiguration = true
-    }
+//    dokka {
+//        outputFormat = "html"
+//        outputDirectory = "$buildDir/dokka"
+//        // set true to omit intra-project dependencies
+//        disableAutoconfiguration = true
+//    }
 }
 
 
 android {
     compileSdkVersion(28)
+
+    sourceSets {
+        named("main") {
+            java.srcDirs("src/main/java", "src/main/kotlin")
+        }
+        named("release") {
+            java.srcDirs("src/release/java", "src/release/kotlin")
+        }
+    }
 
     defaultConfig {
         minSdkVersion(21)
@@ -54,8 +77,11 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+        getByName("debug") {
+            isMinifyEnabled = false
         }
     }
 
@@ -75,24 +101,27 @@ android {
 
 android.libraryVariants.configureEach {
     val variantName = name
+    val variant = this
 
     if (variantName == "release") {
-        simplyPublish {
-            useGpg = true
-            variant = variantName
-            pubComponent = "android"
-            sourcesPath = files(javaCompileProvider.get().source)
+        jarbird {
+            pub(variantName) {
+                useGpg = true
+                from(components[variantName])
+                docSourceSets = variant
+            }
         }
     }
 }
 
 dependencies {
 
+//    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.10.2")
     api(project(":ihlog"))
     implementation(kotlin("stdlib-jdk8", "1.3.71"))
 
-    testImplementation("junit:junit:4.13")
-    testImplementation("org.assertj:assertj-core:3.12.2")
-    testImplementation("org.robolectric:robolectric:4.1")
-    testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.assertj:assertj-core:3.16.1")
+    testImplementation("org.robolectric:robolectric:4.3.1")
+    testImplementation("io.mockk:mockk:1.10.2")
 }
