@@ -107,8 +107,7 @@ android.libraryVariants.configureEach {
         jarbird {
             pub(variantName) {
                 useGpg = true
-                from(components[variantName])
-                docSourceSets = variant
+                from(variant)
             }
         }
     }
