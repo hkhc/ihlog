@@ -84,8 +84,8 @@ detekt {
 //}
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8", "1.3.70"))
-    testImplementation("junit:junit:4.12")
-    testImplementation("org.assertj:assertj-core:3.12.2")
-    testImplementation("io.mockk:mockk:1.9.3")
+    implementation(kotlin("stdlib-jdk8", "1.4.32"))
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.assertj:assertj-core:3.19.0")
+    testImplementation("io.mockk:mockk:1.11.0")
 }

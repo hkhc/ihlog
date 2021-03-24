@@ -2,7 +2,6 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
 }
 
 
@@ -26,7 +25,7 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(kotlin("stdlib-jdk8", "1.3.70"))
+    implementation(kotlin("stdlib-jdk8", "1.4.32"))
     implementation("com.android.support:appcompat-v7:28.0.0")
     implementation(project(":ihlog-android"))
     testImplementation("junit:junit:4.12")

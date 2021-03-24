@@ -1,5 +1,6 @@
+variant: release
 artifactId: ihlog-android
-version: 0.5.2
+version: 0.5.3
 packaging: aar
 description: Easy Kotlin Logging Library for Android
 

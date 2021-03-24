@@ -28,7 +28,6 @@ buildscript {
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-android-extensions")
     id("kotlin-kapt")
     // "io.hkhc.jarbird" must be after "com.android.library"
     // so that libraryVariants is configured before jarbird
