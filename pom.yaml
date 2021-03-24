@@ -1,6 +1,6 @@
 variant: release
 group: io.hkhc.log
-version: 0.5.3-SNAPSHOT
+version: 0.5.3
 description: Easy Kotlin Logging Library
 
 licenses:

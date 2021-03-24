@@ -96,7 +96,6 @@ android {
             isReturnDefaultValues = true
         }
     }
-
 }
 
 android.libraryVariants.configureEach {
@@ -120,7 +119,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", "1.3.71"))
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.assertj:assertj-core:3.16.1")
-    testImplementation("org.robolectric:robolectric:4.3.1")
-    testImplementation("io.mockk:mockk:1.10.2")
+    testImplementation("org.assertj:assertj-core:3.19.1")
+    testImplementation("org.robolectric:robolectric:4.5.1")
+    testImplementation("io.mockk:mockk:1.11.0")
 }
