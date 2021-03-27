@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package io.hkhc.log
 
+import io.hkhc.log.internal.LogFactory
 import io.hkhc.log.providers.StringLogProvider
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -33,8 +34,8 @@ class LogTesterRule : TestRule {
 
     class LogTesterStatement(var writer: StringWriter, var base: Statement?) : Statement() {
         override fun evaluate() {
-            LogSettings.defaultProvider = StringLogProvider(writer, MockTimeSource(0))
-            LogSettings.logLevel = Priority.Trace
+            LogFactory.defaultProvider = StringLogProvider(writer, MockTimeSource(0))
+            LogFactory.logLevel = Priority.Trace
             base?.evaluate()
         }
     }

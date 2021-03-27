@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,28 +18,34 @@
 
 package io.hkhc.log.internal
 
-import io.hkhc.log.LogSettings
+import io.hkhc.log.MockTimeSource
+import io.hkhc.log.Priority
 import io.hkhc.log.providers.NullLogProvider
 import io.hkhc.log.providers.PrintWriterLogProvider
+import io.hkhc.log.providers.PriorityLog
+import io.hkhc.log.providers.SimpleMetaTag
+import io.hkhc.log.providers.StringLogProvider
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
+import java.io.StringWriter
 
 class LogFactoryTest {
 
     @Before
     fun setUp() {
-//        LogFactory.reset()
+        LogFactory.defaultProvider = NullLogProvider()
+        TagMaker.metaTagPolicy = SimpleMetaTag("WWW")
     }
 
     @Test
     fun `create tag`() {
         // given
-        LogSettings.metaTag = ""
+        TagMaker.metaTagPolicy = SimpleMetaTag("")
         // then
         assertThat(LogFactory.createTag(LogFactoryTest::class.java)).isEqualTo("LFT")
         // when
-        LogSettings.metaTag = "TEST"
+        TagMaker.metaTagPolicy = SimpleMetaTag("TEST")
         assertThat(LogFactory.createTag(LogFactoryTest::class.java)).isEqualTo("TEST_LFT")
     }
 
@@ -47,7 +53,7 @@ class LogFactoryTest {
     fun `log meta tag`() {
 
         // given
-        LogSettings.metaTag = "TEST"
+        TagMaker.metaTagPolicy = SimpleMetaTag("TEST")
 
         // when
         val log1 = LogFactory.getLog(LogFactoryTest::class.java)
@@ -60,7 +66,7 @@ class LogFactoryTest {
     fun `log meta tag change is active immediately`() {
 
         // given
-        LogSettings.metaTag = "TEST"
+        TagMaker.metaTagPolicy = SimpleMetaTag("TEST")
 
         // when
         var log1 = LogFactory.getLog(LogFactoryTest::class.java)
@@ -69,11 +75,12 @@ class LogFactoryTest {
         assertThat(log1.getLogTag()).isEqualTo("TEST_LFT")
 
         // when
-        LogSettings.metaTag = "APPLE"
+        TagMaker.metaTagPolicy = SimpleMetaTag("APPLE")
         log1 = LogFactory.getLog(LogFactoryTest::class.java)
 
         // then
-        assertThat(log1.getLogTag()).isEqualTo("APPLE_LFT")
+        // The metatag is not changed after the first getLog()
+        assertThat(log1.getLogTag()).isEqualTo("TEST_LFT")
     }
 
     @Test
@@ -102,16 +109,21 @@ class LogFactoryTest {
     fun `change default provider`() {
 
         // given
+        val writer = StringWriter()
+        LogFactory.defaultProvider = StringLogProvider(writer, MockTimeSource(0))
+        LogFactory.logLevel = Priority.Trace
         var log1 = LogFactory.getLog(LogFactoryTest::class.java)
 
         // then
-        assertThat(log1).isInstanceOf(PrintWriterLogProvider.PrintWriterLog::class.java)
+        var actualProvider = (log1 as PriorityLog).delegate
+        assertThat(actualProvider).isInstanceOf(PrintWriterLogProvider.PrintWriterLog::class.java)
 
         // when
-        LogSettings.defaultProvider = NullLogProvider()
+        LogFactory.defaultProvider = NullLogProvider()
         log1 = LogFactory.getLog(TagMakerTest::class.java)
 
         // then
-        assertThat(log1).isInstanceOf(NullLogProvider.NullIHLog::class.java)
+        actualProvider = (log1 as PriorityLog).delegate
+        assertThat(actualProvider).isInstanceOf(NullLogProvider.NullIHLog::class.java)
     }
 }

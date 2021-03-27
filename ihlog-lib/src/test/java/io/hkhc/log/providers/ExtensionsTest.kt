@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 package io.hkhc.log.providers
 
-import io.hkhc.log.debug
+import io.hkhc.log.l
 import org.junit.Test
 
 class ExtensionsTest {
@@ -26,6 +26,6 @@ class ExtensionsTest {
     @Test
     fun `test logging message only`() {
 
-        debug("Hello")
+        l.debug("Hello")
     }
 }

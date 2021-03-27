@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 package io.hkhc.log
 
+import io.hkhc.log.internal.LogFactory
 import io.hkhc.log.providers.StringLogProvider
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -28,8 +29,8 @@ class PriorityTest {
     @Test
     fun `test shouldBeFiltered`() {
 
-        assertThat(Priority.Warn.shouldBeFilteredBy(Priority.Error)).isTrue()
-        assertThat(Priority.Warn.shouldBeFilteredBy(Priority.Trace)).isFalse()
+        assertThat(Priority.Warn.shouldBeFilteredBy(Priority.Error)).isTrue
+        assertThat(Priority.Warn.shouldBeFilteredBy(Priority.Trace)).isFalse
     }
 
     @Test
@@ -37,10 +38,11 @@ class PriorityTest {
 
         // given
         val provider = StringLogProvider(StringWriter(), MockTimeSource(0))
-        val log = provider.getLog("HELLO")
+        LogFactory.defaultProvider = provider
+        val log = LogFactory.getLog(PriorityTest::class.java)
 
         // when
-        LogSettings.logLevel = Priority.Warn
+        LogFactory.logLevel = Priority.Warn
         log.trace("Log trace") // should not logged
         log.warn("Log warn") // should be logged
         log.err("Log err") // should be logged
@@ -48,8 +50,8 @@ class PriorityTest {
         // then
         assertThat(provider.getLogString()).isEqualTo(
             """
-                01-01 08:00:00.000  -/HELLO w/Log warn
-                01-01 08:00:00.001  -/HELLO e/Log err
+                01-01 08:00:00.000  -/PrTe w/Log warn
+                01-01 08:00:00.001  -/PrTe e/Log err
 
             """.trimIndent())
     }

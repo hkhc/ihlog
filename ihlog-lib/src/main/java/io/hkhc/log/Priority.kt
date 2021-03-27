@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ sealed class Priority(val value: Int) {
 
     fun shouldBeFilteredBy(p: Priority) =
         p.value > value
+
+    override fun toString() = "${this::class.java.simpleName} ($value)"
 
     object Trace : Priority(1)
     object Debug : Priority(2)

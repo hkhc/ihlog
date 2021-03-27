@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,6 +105,7 @@ class AndroidLogProviderTest {
         verify { Log.println(Log.DEBUG, "LOG", "Hello") }
     }
 
+    @Test
     fun `assert print log`(provider: IHLogProvider, getLogString: () -> String) {
 
         val log = provider.getLog("LOG")
@@ -197,11 +198,14 @@ class AndroidLogProviderTest {
 
         val log = provider.getLog("LOG")
 
-        log.log(Priority.Debug, null, """
+        log.log(
+            Priority.Debug, null,
+            """
                 Hello
                 World
                 Hello World
-            """.trimIndent())
+            """.trimIndent()
+        )
 
         verify {
             Log.println(Log.DEBUG, "LOG", "Hello")

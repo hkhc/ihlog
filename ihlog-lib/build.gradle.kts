@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
-//repositories {
-//    mavenLocal()
-//}
-
 plugins {
     kotlin("jvm")
-    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
-    id("io.gitlab.arturbosch.detekt") version "1.5.1"
+    id("org.jlleitschuh.gradle.ktlint")
+    id("io.gitlab.arturbosch.detekt")
     id("io.hkhc.jarbird")
     // for build script debugging
-    id("com.dorongold.task-tree") version "1.5"
+    id("com.dorongold.task-tree")
 }
 
 /*
@@ -76,16 +72,9 @@ detekt {
     config = files("default-detekt-config.yml")
 }
 
-//jarbird {
-//    pub {
-//        useGpg = true
-////        pubComponent = "kotlin"
-//    }
-//}
-
 dependencies {
-    implementation(kotlin("stdlib-jdk8", "1.4.32"))
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.assertj:assertj-core:3.19.0")
-    testImplementation("io.mockk:mockk:1.11.0")
+    implementation(Kotlin.stdlib.jdk8)
+    testImplementation(Testing.junit4)
+    testImplementation("org.assertj:assertj-core:_")
+    testImplementation(Testing.mockK)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,6 @@
  *
  */
 
-buildscript {
-    repositories {
-        // needed by dokka
-        jcenter()
-    }
-    dependencies {
-    }
-}
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -34,14 +25,10 @@ plugins {
     id("io.hkhc.jarbird")
     id("org.jetbrains.dokka")
 //    id("digital.wup.android-maven-publish") version "3.6.2"
-    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
-    id("io.gitlab.arturbosch.detekt") version "1.5.1"
+    id("org.jlleitschuh.gradle.ktlint")
+    id("io.gitlab.arturbosch.detekt")
     // for build script debugging
-    id("com.dorongold.task-tree") version "1.5"
-}
-
-repositories {
-    jcenter()
+    id("com.dorongold.task-tree")
 }
 
 tasks {
@@ -53,9 +40,13 @@ tasks {
 //    }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 android {
-    compileSdkVersion(28)
+    compileSdkVersion(30)
 
     sourceSets {
         named("main") {
@@ -68,7 +59,7 @@ android {
 
     defaultConfig {
         minSdkVersion(21)
-        targetSdkVersion(28)
+        targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -87,6 +78,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     testOptions {
@@ -113,12 +108,11 @@ android.libraryVariants.configureEach {
 
 dependencies {
 
-//    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.10.2")
     api(project(":ihlog"))
-    implementation(kotlin("stdlib-jdk8", "1.3.71"))
+    implementation(Kotlin.stdlib.jdk8)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.assertj:assertj-core:3.19.1")
-    testImplementation("org.robolectric:robolectric:4.5.1")
-    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation(Testing.junit4)
+    testImplementation("org.assertj:assertj-core:_")
+    testImplementation(Testing.roboElectric)
+    testImplementation(Testing.mockK)
 }

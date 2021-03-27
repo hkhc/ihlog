@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ class TagMakerTest {
             assertThat(getClassNameAbbr("A1")).isEqualTo("A1")
             assertThat(getClassNameAbbr("a1")).isEqualTo("A1")
             assertThat(getClassNameAbbr("1A")).isEqualTo("1A")
-            assertThat(TagMaker.getClassNameAbbr("1a")).isEqualTo("1a")
+            assertThat(getClassNameAbbr("1a")).isEqualTo("1a")
         }
     }
 

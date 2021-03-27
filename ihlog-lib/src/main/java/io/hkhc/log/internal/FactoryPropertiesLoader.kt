@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ import io.hkhc.log.IHLogProvider
 import java.io.IOException
 import java.util.Properties
 
-class FactoryPropertiesLoader {
+private const val PROPERTY_PATH = "/ihlog.properties"
+private const val PROVIDER_KEY = "provider"
 
-    private val PROPERTY_PATH = "/ihlog.properties"
-    private val PROVIDER_KEY = "provider"
+class FactoryPropertiesLoader {
 
     fun getStreamFromResource(path: String = PROPERTY_PATH) =
         this::class.java.getResourceAsStream(path)

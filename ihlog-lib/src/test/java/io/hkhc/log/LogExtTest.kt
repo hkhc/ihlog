@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@
 
 package io.hkhc.log
 
+import io.hkhc.log.internal.LogFactory
+import io.hkhc.log.internal.TagMaker
+import io.hkhc.log.providers.SimpleMetaTag
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -25,7 +28,7 @@ import org.junit.Test
 class LogExtTest {
 
     init {
-        LogSettings.metaTag = ""
+        TagMaker.metaTagPolicy = SimpleMetaTag("")
     }
 
     @Rule @JvmField
@@ -35,12 +38,12 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
-        l.l.trace { "Hello ${++count}" }
+        LogFactory.logLevel = Priority.Trace
+        l.trace { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Error
+        LogFactory.logLevel = Priority.Error
         l.trace { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -50,12 +53,12 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        LogFactory.logLevel = Priority.Trace
         l.trace("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Error
+        LogFactory.logLevel = Priority.Error
         l.trace("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -66,7 +69,7 @@ class LogExtTest {
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/TAG t/Hello")
     }
 
-    @Test fun `test trace messaage`() {
+    @Test fun `test trace message`() {
         l.trace("Hello")
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/LET t/Hello")
     }
@@ -85,12 +88,12 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        LogFactory.logLevel = Priority.Trace
         l.info { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Error
+        LogFactory.logLevel = Priority.Error
         l.info { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -100,12 +103,12 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        LogFactory.logLevel = Priority.Trace
         l.info("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Error
+        LogFactory.logLevel = Priority.Error
         l.info("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -116,7 +119,7 @@ class LogExtTest {
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/TAG i/Hello")
     }
 
-    @Test fun `test info messaage`() {
+    @Test fun `test info message`() {
         l.info("Hello")
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/LET i/Hello")
     }
@@ -135,12 +138,12 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        LogFactory.logLevel = Priority.Trace
         l.debug { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Error
+        LogFactory.logLevel = Priority.Error
         l.debug { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -150,12 +153,12 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        LogFactory.logLevel = Priority.Trace
         l.debug("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Error
+        LogFactory.logLevel = Priority.Error
         l.debug("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -166,7 +169,7 @@ class LogExtTest {
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/TAG d/Hello")
     }
 
-    @Test fun `test debug messaage`() {
+    @Test fun `test debug message`() {
         l.debug("Hello")
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/LET d/Hello")
     }
@@ -185,12 +188,12 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        LogFactory.logLevel = Priority.Trace
         l.warn { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Error
+        LogFactory.logLevel = Priority.Error
         l.warn { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -200,15 +203,18 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        // the lambda should be executed
+        LogFactory.logLevel = Priority.Trace
         l.warn("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Error
+        // the lambda should not be executed
+        LogFactory.logLevel = Priority.Error
         l.warn("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
+
     }
 
     @Test fun `test warn tag + message`() {
@@ -216,7 +222,7 @@ class LogExtTest {
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/TAG w/Hello")
     }
 
-    @Test fun `test warn messaage`() {
+    @Test fun `test warn message`() {
         l.warn("Hello")
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/LET w/Hello")
     }
@@ -235,12 +241,12 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        LogFactory.logLevel = Priority.Trace
         l.err("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
 
-        LogSettings.logLevel = Priority.Fatal
+        LogFactory.logLevel = Priority.Fatal
         l.err("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -251,7 +257,7 @@ class LogExtTest {
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/TAG e/Hello")
     }
 
-    @Test fun `test err messaage`() {
+    @Test fun `test err message`() {
         l.err("Hello")
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/LET e/Hello")
     }
@@ -270,7 +276,7 @@ class LogExtTest {
 
         var count = 0
 
-        LogSettings.logLevel = Priority.Trace
+        LogFactory.logLevel = Priority.Trace
         l.fatal("TAG") { "Hello ${++count}" }
 
         assertThat(count).isEqualTo(1)
@@ -283,7 +289,7 @@ class LogExtTest {
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/TAG f/Hello")
     }
 
-    @Test fun `test fatal messaage`() {
+    @Test fun `test fatal message`() {
         l.fatal("Hello")
         assertThat(logTesterRule.firstLine).isEqualTo("01-01 08:00:00.000  -/LET f/Hello")
     }

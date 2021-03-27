@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ object TagMaker {
      * getClassNameAbbr("OrangeBanana").equals("OrBa")
      * getClassNameAbbr("AOrange").equals("AOr")
      *
-     * @param clazz class object to get class name
+     * @param className class name to be abbreviated
      * @return abbreviated string
      */
     fun getClassNameAbbr(className: String): String {
@@ -69,8 +69,8 @@ object TagMaker {
                 .substringBefore("\$Companion")
                 .substringBefore("\$\$")
 
-        // TODO room to optimize: reduce number of stringbuilder
-        // Shortgroup can only have at most char. So it can be a char array
+        // TODO room to optimize: reduce number of StringBuilder
+        // Short Group can only have at most char. So it can be a char array
         val longBuilder = StringBuilder()
         val shortBuilder = StringBuilder()
 

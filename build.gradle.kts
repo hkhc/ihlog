@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,85 +18,28 @@
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-
-
-buildscript {
-
-val kotlin_version by extra("1.4.31")
-    //    ext {
-//
-//        /* Platform and gradle plugin version */
-//        kotlin_version = "1.3.61"
-//        detekt_version = "1.3.1"
-//        dokka_version = "0.10.1"
-//
-//        junit_version = "4.12"
-//        coretesting_version = "2.1.0"
-//
-//        dagger_version = "2.25.4"
-//        retrofit_version = "2.7.0"
-//        okhttp_version = "3.14.4"
-//
-//        corektx_version = "1.1.0"
-//        appcompat_version = "1.1.0"
-//        lifecycle_version = "2.2.0"
-//        constraintLayout_version = "2.0.0-beta4"
-//        swiperefreshlayout_version = "1.0.0"
-//        material_design_version = "1.1.0-rc02"
-//        gson_version = "2.8.5"
-//
-//        rxjava_version = "2.2.16"
-//        rxkotlin_version = "2.4.0"
-//        rxandroid_version = "2.1.1"
-//
-//        lottie_version = "3.3.1"
-//        jsonapi_converter_version = "0.10"
-//
-//        mockk_version = "1.9.3"
-//        assertj_version = "3.11.1"
-//        testing_core_version = "1.1.0"
-//        arch_coretesting_version = "2.1.0"
-//
-//
-//    }
-
-
-//    ext.kotlin_version = "1.3.21"
-//    ext.dokka_version = "0.9.17"
+@Suppress("GradlePluginVersion") buildscript {
     repositories {
-        mavenCentral()
-        jcenter()
         google()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.6.3")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath("com.android.tools.build:gradle:_")
     }
-
 }
 
 plugins {
-    kotlin("jvm") version "1.4.32"
-    id("io.hkhc.jarbird")  version "0.5.0.4"
-}
-
-repositories {
-    jcenter() // needed by dokka
+    kotlin("jvm")
+    id("io.hkhc.jarbird")
 }
 
 jarbird {
-    mavenLocal()
     mavenCentral()
 }
 
-
 subprojects {
-
     repositories {
         mavenCentral()
-        jcenter()
         google()
+        jcenter() //needed by dokka
     }
-
 }
-

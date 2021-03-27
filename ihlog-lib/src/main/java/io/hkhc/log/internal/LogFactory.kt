@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,12 +37,6 @@ object LogFactory {
             logMap.clear()
         }
 
-    var metaTag: String = TagMaker.metaTag
-        set(value) {
-            field = value
-            logMap.clear()
-        }
-
     fun getCurrentDefaultProvider() =
         defaultProvider ?: (
                 FactoryPropertiesLoader().loadProvider()?.also {
@@ -70,7 +64,6 @@ object LogFactory {
      */
     fun clear() {
         logMap.clear()
-        metaTag = TagMaker.metaTag
         defaultProvider = null
     }
 }

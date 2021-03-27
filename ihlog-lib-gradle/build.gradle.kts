@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,15 @@
  *
  */
 
-package io.hkhc.log;
+plugins {
+    kotlin("jvm")
+}
 
-public class HelloJ {
-    public String sayHello(String name) {
-        return "Hello " + name;
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation(Kotlin.stdlib)
 }

@@ -1,5 +1,5 @@
 group: io.hkhc.log
-version: 0.5.3
+version: 0.6
 description: Easy Kotlin Logging Library
 
 licenses:

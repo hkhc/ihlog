@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Herman Cheung
+ * Copyright (c) 2021. Herman Cheung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,13 +49,14 @@ class AndroidLogProvider(var currentOSVersion: Int = Build.VERSION.SDK_INT) : IH
 
         override fun log(priority: Priority, tag: String?, message: String) {
 
-            val level = when (priority) {
+            val level: Int = when (priority) {
                 Priority.Info -> Log.INFO
                 Priority.Trace -> Log.INFO
                 Priority.Debug -> Log.DEBUG
                 Priority.Error -> Log.ERROR
                 Priority.Fatal -> Log.ASSERT
                 Priority.Warn -> Log.WARN
+                else -> 0
             }
 
             message.lineSequence().forEach { line ->
@@ -66,13 +67,14 @@ class AndroidLogProvider(var currentOSVersion: Int = Build.VERSION.SDK_INT) : IH
 
     class PreNAndroidIHLog(tag: String) : NAndroidIHLog(tag) {
 
+        @Suppress("MagicNumber")
         private val preNLogTagSize = 23
         private val primaryTag: String
         private val secondaryTag: String
 
         init {
 
-            if (tag.length>preNLogTagSize) {
+            if (tag.length > preNLogTagSize) {
                 primaryTag = tag.substring(0, preNLogTagSize)
                 secondaryTag = tag.substring(preNLogTagSize)
             } else {
@@ -86,7 +88,7 @@ class AndroidLogProvider(var currentOSVersion: Int = Build.VERSION.SDK_INT) : IH
             if (tag == null)
                 log(priority, defaultTag, message)
             else {
-                if (tag.length>preNLogTagSize) {
+                if (tag.length > preNLogTagSize) {
                     val pTag = tag.substring(0, preNLogTagSize)
                     val sTag = tag.substring(preNLogTagSize)
                     message.lineSequence().forEach { line ->
