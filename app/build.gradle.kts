@@ -42,7 +42,7 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":ihlog-android"))
-    implementation(Kotlin.stdlib.jdk8)
+    implementation(Kotlin.stdlib)
     testImplementation(Testing.junit4)
     androidTestImplementation("com.android.support.test:runner:_")
     androidTestImplementation("com.android.support.test.espresso:espresso-core:_")

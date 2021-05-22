@@ -11,6 +11,9 @@
       <entry name="!?*.kt" />
       <entry name="!?*.clj" />
     </wildcardResourcePatterns>
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="1.6">
+      <module name="ihlog-root.buildSrc" target="1.8" />
+      <module name="ihlog.buildSrc" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

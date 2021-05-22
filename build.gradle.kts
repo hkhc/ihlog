@@ -23,6 +23,7 @@
         google()
     }
     dependencies {
+        classpath(Kotlin.stdlib.jdk8)
         classpath("com.android.tools.build:gradle:_")
     }
 }
@@ -33,7 +34,9 @@ plugins {
 }
 
 jarbird {
-    mavenCentral()
+    pub {
+        mavenCentral()
+    }
 }
 
 subprojects {

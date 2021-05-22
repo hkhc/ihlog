@@ -20,9 +20,9 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
-    // "io.hkhc.jarbird" must be after "com.android.library"
+    // "io.hkhc.jarbird-android" must be after "com.android.library"
     // so that libraryVariants is configured before jarbird
-    id("io.hkhc.jarbird")
+    id("io.hkhc.jarbird-android")
     id("org.jetbrains.dokka")
 //    id("digital.wup.android-maven-publish") version "3.6.2"
     id("org.jlleitschuh.gradle.ktlint")
@@ -92,6 +92,10 @@ android {
     }
 }
 
+jarbird {
+    mavenCentral()
+}
+
 android.libraryVariants.configureEach {
     val variantName = name
     val variant = this
@@ -109,10 +113,10 @@ android.libraryVariants.configureEach {
 dependencies {
 
     api(project(":ihlog"))
-    implementation(Kotlin.stdlib.jdk8)
+    implementation(Kotlin.stdlib)
 
     testImplementation(Testing.junit4)
     testImplementation("org.assertj:assertj-core:_")
-    testImplementation(Testing.roboElectric)
+    testImplementation(Testing.robolectric)
     testImplementation(Testing.mockK)
 }
