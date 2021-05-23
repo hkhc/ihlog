@@ -24,7 +24,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("io.hkhc.jarbird")
     // for build script debugging
-    id("com.dorongold.task-tree")
+    id("org.barfuin.gradle.taskinfo")
 }
 
 /*
@@ -73,7 +73,7 @@ detekt {
 }
 
 dependencies {
-    implementation(Kotlin.stdlib.jdk8)
+    implementation(Kotlin.stdlib)
     testImplementation(Testing.junit4)
     testImplementation("org.assertj:assertj-core:_")
     testImplementation(Testing.mockK)

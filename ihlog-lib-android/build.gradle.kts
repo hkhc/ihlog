@@ -22,13 +22,13 @@ plugins {
     id("kotlin-kapt")
     // "io.hkhc.jarbird" must be after "com.android.library"
     // so that libraryVariants is configured before jarbird
-    id("io.hkhc.jarbird")
+    id("io.hkhc.jarbird-android")
     id("org.jetbrains.dokka")
 //    id("digital.wup.android-maven-publish") version "3.6.2"
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
     // for build script debugging
-    id("com.dorongold.task-tree")
+    id("org.barfuin.gradle.taskinfo")
 }
 
 tasks {
@@ -100,6 +100,7 @@ android.libraryVariants.configureEach {
         jarbird {
             pub(variantName) {
                 useGpg = true
+                mavenCentral()
                 from(variant)
             }
         }
@@ -109,10 +110,10 @@ android.libraryVariants.configureEach {
 dependencies {
 
     api(project(":ihlog"))
-    implementation(Kotlin.stdlib.jdk8)
+    implementation(Kotlin.stdlib)
 
     testImplementation(Testing.junit4)
     testImplementation("org.assertj:assertj-core:_")
-    testImplementation(Testing.roboElectric)
+    testImplementation(Testing.robolectric)
     testImplementation(Testing.mockK)
 }

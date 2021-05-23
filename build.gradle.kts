@@ -21,9 +21,12 @@
 @Suppress("GradlePluginVersion") buildscript {
     repositories {
         google()
+        mavenCentral()
     }
     dependencies {
+        //noinspection GradlePluginVersion
         classpath("com.android.tools.build:gradle:_")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
     }
 }
 

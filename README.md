@@ -17,39 +17,54 @@ Just like most library on Android, add line at `dependencies` block will do
 ```groovy
 dependencies {
     // ...
-    implementation 'io.hkhc.log:ihlog:0.5'
+    implementation 'io.hkhc.log:ihlog:0.6.0.1'
     // ...
 }
 ```
 
-The library is available at both Maven Central and JCenter, so chances are that you don't need to
+The library is available at both Maven Central, so chances are that you don't need to
 change the `repository` settings in Gradle script.
 
 ## Basic usage
 
-By default the log line issued by this library will be sent to Android logcat. It can be changed and
-we will come back to this later.
+By default the log line issued by this library will be sent to standard output. To output log to
+Android log, add the following to the `Application.onCreate` class of your Android app.
+
+```
+class MyApplication: Application() {
+    override fun onCreate() {
+        super.onCreate()
+        IHLogConfig.init(createAndroidSetting(this))
+    }
+}
+```
 
 ### Log a line
 
 We may just log a line within class methods, extension methods, or package functions
 
 ```kotlin
-class HelloWorld {
+// Class methods
+Class HelloWorld {
     fun testOfLog() {
-        debug("Hello. Thanks for using IHLog")
+        l.debug("Hello. Thanks for using IHLog")
     }
 }
 ```
 
 ``` kotlin
+// Extension functions
 fun View.testOfLog() {
-    debug("Hello. log in extension functions")
+    l.debug("Hello. log in extension functions")
 }
 ```
 
 ``` kotlin
+// Package functions
 package myPackage
+
+
+
 fun testOfLog() {
     debug("Hello. log in package functions")
 }
