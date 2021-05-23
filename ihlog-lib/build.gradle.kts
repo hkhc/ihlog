@@ -73,7 +73,7 @@ detekt {
 }
 
 dependencies {
-    implementation(Kotlin.stdlib.jdk8)
+    implementation(Kotlin.stdlib)
     testImplementation(Testing.junit4)
     testImplementation("org.assertj:assertj-core:_")
     testImplementation(Testing.mockK)

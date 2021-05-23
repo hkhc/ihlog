@@ -110,10 +110,10 @@ android.libraryVariants.configureEach {
 dependencies {
 
     api(project(":ihlog"))
-    implementation(Kotlin.stdlib.jdk8)
+    implementation(Kotlin.stdlib)
 
     testImplementation(Testing.junit4)
     testImplementation("org.assertj:assertj-core:_")
-    testImplementation(Testing.roboElectric)
+    testImplementation(Testing.robolectric)
     testImplementation(Testing.mockK)
 }
