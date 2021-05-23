@@ -18,7 +18,6 @@
 
 import de.fayard.refreshVersions.bootstrapRefreshVersions
 
-include(":ihlog-lib-gradle")
 /**
  * The pluginManagement block is need to load plugin from maven local repository.
  * it has to be the first block in settings.gradle.kts
@@ -49,7 +48,7 @@ plugins {
 
 // Change root project name
 
-include("app", ":ihlog-lib", ":ihlog-lib-android")
+include(":app", ":ihlog-lib", ":ihlog-lib-android",":ihlog-lib-gradle")
 
 rootProject.name = "ihlog-root"
 
