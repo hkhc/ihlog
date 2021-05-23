@@ -33,14 +33,9 @@ pluginManagement {
     }
 }
 
-buildscript {
-    repositories { gradlePluginPortal() }
-    dependencies {
-        classpath("de.fayard.refreshVersions:refreshVersions:0.9.7")
-    }
+plugins {
+    id("de.fayard.refreshVersions") version "0.10.0"
 }
-
-bootstrapRefreshVersions()
 
 // The default project name is the same as the folder.
 // Change the project name here if we need something different

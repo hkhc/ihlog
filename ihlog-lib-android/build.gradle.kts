@@ -22,7 +22,7 @@ plugins {
     id("kotlin-kapt")
     // "io.hkhc.jarbird" must be after "com.android.library"
     // so that libraryVariants is configured before jarbird
-    id("io.hkhc.jarbird")
+    id("io.hkhc.jarbird-android")
     id("org.jetbrains.dokka")
 //    id("digital.wup.android-maven-publish") version "3.6.2"
     id("org.jlleitschuh.gradle.ktlint")
