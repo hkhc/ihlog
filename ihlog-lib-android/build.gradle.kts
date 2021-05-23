@@ -28,7 +28,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
     // for build script debugging
-    id("com.dorongold.task-tree")
+    id("org.barfuin.gradle.taskinfo")
 }
 
 tasks {

@@ -24,7 +24,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("io.hkhc.jarbird")
     // for build script debugging
-    id("com.dorongold.task-tree")
+    id("org.barfuin.gradle.taskinfo")
 }
 
 /*
