@@ -100,6 +100,7 @@ android.libraryVariants.configureEach {
         jarbird {
             pub(variantName) {
                 useGpg = true
+                mavenCentral()
                 from(variant)
             }
         }
