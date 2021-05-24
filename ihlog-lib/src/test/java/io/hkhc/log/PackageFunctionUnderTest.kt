@@ -16,11 +16,10 @@
  *
  */
 
-package io.hkhc.log.providers
+package io.hkhc.log
 
-import java.io.PrintWriter
+val log by PackageLog()
 
-class StdioLogProvider :
-        PrintWriterLogProvider(
-                PrintWriter(System.out, true)
-        )
+fun packageFun() {
+    log.debug("Hello")
+}

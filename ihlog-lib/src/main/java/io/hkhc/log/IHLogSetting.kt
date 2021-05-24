@@ -18,10 +18,13 @@
 
 package io.hkhc.log
 
+import io.hkhc.log.providers.SimpleMetaTag
+import io.hkhc.log.providers.StdioLogProvider
+
 data class IHLogSetting(
-    var provider: IHLogProvider?,
-    var metaTagPolicy: MetaTag?,
-    var defaultPriority: Priority?
+    var provider: IHLogProvider? = StdioLogProvider(),
+    var metaTagPolicy: MetaTag? = SimpleMetaTag(""),
+    var defaultPriority: Priority? = Priority.Debug
 ) {
     fun overlayTo(other: IHLogSetting) {
         provider?.let { other.provider = it }

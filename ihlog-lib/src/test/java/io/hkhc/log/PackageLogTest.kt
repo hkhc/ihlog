@@ -16,11 +16,18 @@
  *
  */
 
-package io.hkhc.log.providers
+package io.hkhc.log
 
-import java.io.PrintWriter
+import org.junit.Test
 
-class StdioLogProvider :
-        PrintWriterLogProvider(
-                PrintWriter(System.out, true)
-        )
+class PackageLogTest {
+
+    @Test
+    fun `test log with PackageLog`() {
+
+        packageFun()
+
+
+    }
+
+}

@@ -18,9 +18,25 @@
 
 package io.hkhc.log.providers
 
-import java.io.PrintWriter
+import io.hkhc.log.IHLogConfig
+import io.hkhc.log.IHLogSetting
+import io.hkhc.log.l
+import org.junit.Before
+import org.junit.Test
 
-class StdioLogProvider :
-        PrintWriterLogProvider(
-                PrintWriter(System.out, true)
-        )
+class BoxLogProviderTest {
+
+    @Before
+    fun setup() {
+        IHLogConfig.init(IHLogSetting(provider = BoxLogProvider()))
+    }
+
+    @Test
+    fun testBoxLog() {
+
+        l.debug("A for Apple")
+        l.debug("B for Boy")
+
+    }
+
+}

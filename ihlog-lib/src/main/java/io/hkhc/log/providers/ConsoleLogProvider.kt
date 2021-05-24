@@ -22,18 +22,31 @@ import io.hkhc.log.AbstractIHLog
 import io.hkhc.log.IHLog
 import io.hkhc.log.IHLogProvider
 import io.hkhc.log.Priority
+import io.hkhc.log.Priority.Debug
+import io.hkhc.log.Priority.Error
+import io.hkhc.log.Priority.Fatal
+import io.hkhc.log.Priority.Info
+import io.hkhc.log.Priority.Trace
+import io.hkhc.log.Priority.Warn
+import io.hkhc.log.SystemTimeSource
+import io.hkhc.log.TimeSource
+import java.io.PrintWriter
 
 /**
  * Log provider to send log to two other [IHLog]s. One is for less than error output, and the other
  * for error, fatal or exception. Both [IHLog]s share the same tag.
  *
+ * @property timeSource Time source implementation to get real time clock
  * @property outLogProvider Log provider to create log for non-error output.
  * @property errLogProvider Log provider to create log for error output.
  *
  */
 class ConsoleLogProvider(
-    var outLogProvider: PrintWriterLogProvider,
-    var errLogProvider: PrintWriterLogProvider
+    val timeSource: TimeSource = SystemTimeSource(),
+    val outLogProvider: PrintWriterLogProvider =
+        PrintWriterLogProvider(PrintWriter(System.out), timeSource),
+    val errLogProvider: PrintWriterLogProvider =
+        PrintWriterLogProvider(PrintWriter(System.err), timeSource),
 ) : IHLogProvider {
 
     override fun getLog(defaultTag: String): IHLog =
@@ -47,7 +60,12 @@ class ConsoleLogProvider(
         : AbstractIHLog(defaultTag) {
 
         override fun log(priority: Priority, tag: String?, message: String) {
-            outLogger.log(priority, tag, message)
+            when(priority) {
+                Info, Trace, Debug ->
+                    outLogger.log(priority, tag, message)
+                Warn, Error, Fatal ->
+                    errLogger.log(priority, tag, message)
+            }
         }
     }
 }

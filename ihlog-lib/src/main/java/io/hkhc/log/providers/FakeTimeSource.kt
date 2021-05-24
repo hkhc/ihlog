@@ -18,9 +18,10 @@
 
 package io.hkhc.log.providers
 
-import java.io.PrintWriter
+import io.hkhc.log.TimeSource
 
-class StdioLogProvider :
-        PrintWriterLogProvider(
-                PrintWriter(System.out, true)
-        )
+class FakeTimeSource(private var timeValue: Long = 0): TimeSource {
+    override fun getTime(): Long {
+        return timeValue++
+    }
+}
