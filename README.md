@@ -2,4 +2,4 @@
 
 IHLog is a simple logging library that trying to make simple things simple.
 
-Full documentation at [here](https://hkhc.github.io/ihlog/index)
+Full documentation at [here](https://hkhc.github.io/docs/ihlog/index/)
